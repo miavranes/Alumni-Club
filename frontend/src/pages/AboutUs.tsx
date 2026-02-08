@@ -76,12 +76,14 @@ function AboutUs() {
       </div>
 
       {/* HERO */}
-      <div className="bg-gradient-to-br from-[#294a70] to-[#324D6B] text-white py-16 md:py-24 px-4 text-center relative z-10">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+      <div className="bg-gradient-to-br from-[#294a70] to-[#324D6B] text-white py-12 md:py-16 px-4 text-center relative z-10">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4
+                       bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent
+                       drop-shadow-2xl">
           {t('aboutus.title')}
         </h1>
 
-        <p className="text-sm sm:text-base md:text-lg opacity-90 max-w-xl mx-auto">
+        <p className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed font-light max-w-xl mx-auto">
           {t('aboutus.subtitle')}
         </p>
       </div>
@@ -109,6 +111,7 @@ function AboutUs() {
               src={projekat} 
               alt="Alumni FIT projekat" 
               className="rounded-lg shadow-lg w-full h-64 object-cover hover:shadow-xl transition-shadow duration-300"
+              loading="lazy"
             />
           </div>
         </div>
@@ -121,6 +124,7 @@ function AboutUs() {
               src={konsultacija} 
               alt="Konsultacije i mentorstvo" 
               className="rounded-lg shadow-lg w-full h-64 object-cover hover:shadow-xl transition-shadow duration-300"
+              loading="lazy"
             />
           </div>
           
@@ -173,6 +177,7 @@ function AboutUs() {
               src={event} 
               alt="Alumni eventi i aktivnosti" 
               className="rounded-lg shadow-lg w-full h-64 object-cover hover:shadow-xl transition-shadow duration-300"
+              loading="lazy"
             />
           </div>
         </div>

@@ -258,20 +258,71 @@ export const AlumniDirectory = (props: AlumniDirectoryProps) => {
 
   return (
   <>
+    <style>{`
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideUp {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes scaleIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeIn 0.6s ease-out forwards;
+      }
+
+      .animate-slide-up {
+        animation: slideUp 0.6s ease-out forwards;
+      }
+
+      .animate-scale-in {
+        animation: scaleIn 0.6s ease-out forwards;
+      }
+    `}</style>
+
     <section id="relume" className="px-[5%] py-16 md:py-24 lg:py-28 bg-[#294a70] min-h-screen">
       <div className="container">
-        <div className="mx-auto mb-12 max-w-lg text-center md:mb-18 lg:mb-20">
-          <p className="mb-3 font-semibold md:mb-4 text-white">{tagline}</p>
-          <h2 className="rb-5 mb-5 text-5xl font-bold md:mb-6 md:text-7xl lg:text-8xl text-white">
+        <div className="mx-auto mb-12 max-w-4xl text-center md:mb-18 lg:mb-20 animate-fade-in opacity-0" style={{ animationDelay: '200ms', animationFillMode: 'forwards' }}>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-5 md:mb-6 py-3
+                         bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent
+                         drop-shadow-2xl">
             {heading}
           </h2>
-          <p className="md:text-md text-white">{description}</p>
+          <p className="text-lg md:text-xl text-gray-200 leading-relaxed font-light">{description}</p>
         </div>
 
         <div className="grid grid-cols-1 items-start justify-center gap-x-8 gap-y-12 md:grid-cols-3 md:gap-x-8 md:gap-y-16 lg:gap-x-12">
           {alumniMembers.map((member: AlumniMember, index: number) => (
         <div
           key={index}
+          className="animate-slide-up opacity-0"
+          style={{
+            animationDelay: `${600 + index * 150}ms`,
+            animationFillMode: 'forwards'
+          }}
           onClick={() => {
           if (!member.isPublic) {
             setShowPrivatePopup(true);
@@ -285,11 +336,11 @@ export const AlumniDirectory = (props: AlumniDirectoryProps) => {
         </div>
 
         {!isLoggedIn && (
-          <div className="mx-auto mt-14 w-full max-w-md text-center md:mt-20 lg:mt-24">
+          <div className="mx-auto mt-14 w-full max-w-md text-center md:mt-20 lg:mt-24 animate-scale-in opacity-0" style={{ animationDelay: '1200ms', animationFillMode: 'forwards' }}>
             <h4 className="mb-3 text-3xl font-bold md:mb-4 md:text-4xl md:leading-[1.3] lg:text-5xl text-white">
               {footer.heading}
             </h4>
-            <p className="md:text-md text-white">{footer.description}</p>
+            <p className="text-lg md:text-xl text-gray-200 leading-relaxed font-light">{footer.description}</p>
             <div className="mt-6 flex items-center justify-center gap-x-4 textcenter md:mt-8">
               <Button {...footer.button} onClick={() => setIsModalOpen(true)}>
                 {footer.button.title}
@@ -452,12 +503,12 @@ export const AlumniDirectory = (props: AlumniDirectoryProps) => {
 
 export const AlumniDirectoryDefaults: Props = {
   tagline: "Mediteran FIT",
-  heading: "Alumni klub",
+  heading: "Naša mreža uspjeha",
   description:
-    "Dobrodošli u naš Alumni klub. Povezujemo bivše studente i pratimo njihove uspjehe.",
+    "Upoznajte naše bivše studente koji grade uspješne karijere širom svijeta. Pridružite se zajednici koja povezuje, inspirira i podrška.",
   alumniMembers: [], 
   footer: {
-    heading: "Pridružite se Alumni klubu!",
+    heading: "Postanite dio naše priče!",
     description: "Pošaljite prijavu i budite dio naše mreže bivših studenata.",
     button: { title: "Prijavite se", variant: "primary", size: "lg" },
   },

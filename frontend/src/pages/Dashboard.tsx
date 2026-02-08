@@ -6,6 +6,7 @@ import StatsCards from "../components/admin/StatsCards";
 import UserManagement from "../components/admin/UserManagement";
 import ContentManagement from "../components/admin/ContentManagement";
 import AdminInquiries from "../components/admin/AdminInquiries";
+import { Camera } from "lucide-react";
 
 interface Stats {
   totalUsers: number;
@@ -25,10 +26,14 @@ export default function Dashboard() {
   >("overview");
   const [stats, setStats] = useState<Stats | null>(null);
   const [statsLoading, setStatsLoading] = useState(false);
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [uploadingPicture, setUploadingPicture] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
       navigate("/login");
+    } else if (user?.profile_picture) {
+      setProfilePicture(`http://localhost:4000${user.profile_picture}?t=${Date.now()}`);
     }
   }, [user, loading, navigate]);
 
@@ -48,6 +53,60 @@ export default function Dashboard() {
       alert("Greška pri učitavanju statistika dashboard-a");
     } finally {
       setStatsLoading(false);
+    }
+  };
+
+  const handleProfilePictureUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Molimo odaberite sliku (JPG, PNG, GIF)');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Slika je prevelika. Maksimalna veličina je 5MB.');
+      return;
+    }
+
+    try {
+      setUploadingPicture(true);
+      
+      const formData = new FormData();
+      formData.append('avatar', file);
+
+      const response = await fetch('http://localhost:4000/api/users/me/avatar', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Greška pri upload-u slike');
+      }
+
+      const data = await response.json();
+      
+      // Update profile picture with cache busting
+      if (data.profile_picture) {
+        const newPictureUrl = `http://localhost:4000${data.profile_picture}?t=${Date.now()}`;
+        setProfilePicture(newPictureUrl);
+        
+        // Force re-render by updating user context if possible
+        window.location.reload(); // Simple solution to refresh user data
+      }
+
+      alert('Profilna slika je uspješno ažurirana!');
+    } catch (error) {
+      console.error('Greška pri upload-u:', error);
+      alert('Greška pri upload-u profilne slike');
+    } finally {
+      setUploadingPicture(false);
     }
   };
 
@@ -76,7 +135,7 @@ export default function Dashboard() {
           <h1 className="text-4xl font-bold text-[#294a70] mb-4">
             {isAdmin ? "Admin panel" : "Korisnički Dashboard"}
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg md:text-xl text-gray-600 leading-relaxed font-light">
             {isAdmin
               ? "Dobrodošli u vaš administratorski panel"
               : "Dobrodošli u vaš lični dashboard"}
@@ -158,32 +217,69 @@ export default function Dashboard() {
           <h2 className="text-2xl font-semibold text-[#294a70] mb-4 border-b border-gray-200 pb-2">
             Vaš profil
           </h2>
-          <div className="space-y-3 text-gray-700">
-            <div className="flex justify-between">
-              <span className="font-medium">Korisničko ime:</span>
-              <span>{user.username}</span>
+          
+          <div className="flex items-start gap-6">
+            {/* Profile Picture */}
+            <div className="flex-shrink-0 relative group">
+              <img
+                src={profilePicture || user.profile_picture 
+                  ? `http://localhost:4000${user.profile_picture}?t=${Date.now()}`
+                  : "https://via.placeholder.com/100x100?text=Admin"
+                }
+                alt="Profilna slika"
+                className="w-20 h-20 rounded-full object-cover border-4 border-gray-200 shadow-md"
+              />
+              
+              {/* Upload overlay */}
+              <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
+                <label htmlFor="profile-upload" className="cursor-pointer">
+                  <Camera className="w-6 h-6 text-white" />
+                  <input
+                    id="profile-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleProfilePictureUpload}
+                    className="hidden"
+                    disabled={uploadingPicture}
+                  />
+                </label>
+              </div>
+              
+              {uploadingPicture && (
+                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                </div>
+              )}
             </div>
-            <div className="flex justify-between">
-              <span className="font-medium">Email:</span>
-              <span>{user.email}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium">Puno ime:</span>
-              <span>
-                {user.first_name} {user.last_name}
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="font-medium">Uloga:</span>
-              <span
-                className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  user.role === "admin"
-                    ? "bg-[#ffab1f] text-white"
-                    : "bg-[#294a70] text-white"
-                }`}
-              >
-                {user.role === "admin" ? "Administrator" : "Korisnik"}
-              </span>
+            
+            {/* Profile Info */}
+            <div className="flex-1 space-y-3 text-gray-700">
+              <div className="flex justify-between">
+                <span className="font-medium">Korisničko ime:</span>
+                <span>{user.username}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-medium">Email:</span>
+                <span>{user.email}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="font-medium">Puno ime:</span>
+                <span>
+                  {user.first_name} {user.last_name}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-medium">Uloga:</span>
+                <span
+                  className={`px-3 py-1 rounded-full text-sm font-medium ${
+                    user.role === "admin"
+                      ? "bg-[#ffab1f] text-white"
+                      : "bg-[#294a70] text-white"
+                  }`}
+                >
+                  {user.role === "admin" ? "Administrator" : "Korisnik"}
+                </span>
+              </div>
             </div>
           </div>
         </div>

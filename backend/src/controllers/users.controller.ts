@@ -81,7 +81,30 @@ export async function updateMyProfile(req: Request, res: Response) {
 
   try {
     const body: any = req.body;
+    console.log("updateMyProfile received data:", body); // Debug log
     const data: any = {};
+
+    // Username validacija
+    const username = body.username;
+    if (username !== undefined) {
+      if (typeof username !== "string" || !username.trim()) {
+        return res.status(400).json({ message: "Username is required" });
+      }
+      
+      // Provjeri da li username već postoji (osim za trenutnog korisnika)
+      const existingUser = await prisma.users.findFirst({
+        where: {
+          username: username.trim(),
+          id: { not: req.user.id }
+        }
+      });
+
+      if (existingUser) {
+        return res.status(400).json({ message: "Username already exists" });
+      }
+
+      data.username = username.trim();
+    }
 
     // Email validacija
     const email = body.email;
@@ -179,6 +202,8 @@ export async function updateMyProfile(req: Request, res: Response) {
     if (Object.keys(data).length === 0) {
       return res.status(400).json({ message: "No valid fields to update" });
     }
+
+    console.log("Data to update:", data); // Debug log
 
     const updated = await prisma.users.update({
       where: { id: req.user.id },

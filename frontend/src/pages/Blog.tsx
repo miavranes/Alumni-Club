@@ -320,15 +320,16 @@ export const Blog = (props: BlogProps) => {
 
   return (
     <>
-      <section id="relume" className="px-[5%] py-16 md:py-24 lg:py-28 bg-[#294a70] min-h-screen">
+      <section id="relume" className="px-[5%] py-20 md:py-28 lg:py-32 bg-[#294a70] min-h-screen">
         <div className="container">
-          <div className="mb-12 md:mb-18 lg:mb-20">
-            <div className="mx-auto w-full max-w-lg text-center">
-              <p className="mb-3 font-semibold md:mb-4 text-white">{t("blog.tagline")}</p>
-              <h2 className="rb-5 mb-5 text-5xl font-bold md:mb-6 md:text-7xl lg:text-8xl text-white">
+          <div className="mb-16 md:mb-20 lg:mb-24">
+            <div className="mx-auto w-full max-w-4xl text-center">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-5 md:mb-6 py-3
+                             bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent
+                             drop-shadow-2xl">
                 {t("blog.heading")}
               </h2>
-              <p className="md:text-md text-white">{t("blog.description")}</p>
+              <p className="text-lg md:text-xl text-gray-200 leading-relaxed font-light">{t("blog.description")}</p>
             </div>
           </div>
 

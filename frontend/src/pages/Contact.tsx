@@ -72,11 +72,13 @@ export default function Contact() {
       </div>
 
       {/* HERO */}
-      <div className="bg-gradient-to-br from-[#294a70] to-[#324D6B] text-white py-16 md:py-24 px-4 text-center relative">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 relative z-10">
+      <div className="bg-gradient-to-br from-[#294a70] to-[#324D6B] text-white py-16 md:py-20 px-4 text-center relative">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 py-2
+                       bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent
+                       drop-shadow-2xl">
           Kontaktirajte nas
         </h1>
-        <p className="text-sm sm:text-base md:text-lg opacity-90 relative z-10">
+        <p className="text-lg md:text-xl text-gray-200 leading-relaxed font-light">
           Rado ćemo odgovoriti na sva vaša pitanja
         </p>
       </div>

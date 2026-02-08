@@ -117,7 +117,7 @@ export default function ResetPassword() {
     <div className="min-h-screen flex justify-center items-center p-5">
       <div className="w-full max-w-md p-10 bg-gray-50 rounded-2xl shadow-lg flex flex-col items-center text-center">
         <h2 className="text-4xl text-[#294a70] mb-3 font-bold">Reset šifre</h2>
-        <h4 className="text-base text-gray-600 mb-8 font-normal">
+        <h4 className="text-lg md:text-xl text-gray-600 leading-relaxed font-light mb-8">
           {step === 1
             ? "Unesite korisničko ime i email naloga."
             : "Unesite kod sa emaila i novu šifru."}

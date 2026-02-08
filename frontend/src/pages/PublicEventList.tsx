@@ -55,11 +55,13 @@ export default function PublicEventList() {
   return (
     <div className="w-full min-h-screen bg-white">
       {/* HEADER */}
-      <div className="bg-linear-to-r from-[#294a70] to-[#324D6B] text-white py-20 px-5 text-center shadow-lg">
-        <h1 className="text-5xl font-bold mb-4">
+      <div className="bg-linear-to-r from-[#294a70] to-[#324D6B] text-white py-12 md:py-16 px-5 text-center shadow-lg">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 py-3
+                       bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent
+                       drop-shadow-2xl">
           {token ? "Događaji" : "Javni događaji"}
         </h1>
-        <p className="text-xl opacity-90">
+        <p className="text-lg md:text-xl text-gray-200 leading-relaxed font-light">
           {token
             ? "Pregled dostupnih alumni događaja"
             : "Pregled svih javno dostupnih alumni događaja"}

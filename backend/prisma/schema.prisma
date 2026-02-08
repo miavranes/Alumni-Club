@@ -7,25 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum EventVisibility {
-  Public
-  Members
-  Private
-}
-
-enum EventStatus {
-  Draft
-  Published
-  Archived
-}
-
-enum RSVPStatus {
-  Interested
-  Going
-  Declined
-  Waitlist
-}
-
 model comments {
   id         Int       @id @default(autoincrement())
   post_id    Int
@@ -41,32 +22,24 @@ model comments {
 }
 
 model event_registration {
-  id              Int         @id @default(autoincrement())
-
-  event_id        Int
-  user_id         Int?
-  registered_at   DateTime    @default(now()) @db.Timestamp(6)
-  rsvp            RSVPStatus  @default(Interested)
-  check_in        Boolean     @default(false)
-  notes           String?
-
-  // guest RSVP (NOVO)
+  id               Int        @id @default(autoincrement())
+  check_in         Boolean    @default(false)
+  event_id         Int
+  notes            String?
+  registered_at    DateTime   @default(now()) @db.Timestamp(6)
+  rsvp             RSVPStatus @default(Interested)
+  user_id          Int?
+  guest_email      String?
   guest_first_name String?
   guest_last_name  String?
-  guest_email      String?
-
-  // relacije
-  events          events      @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  users           users?      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  // user RSVP (postojeće)
-  @@unique([user_id, event_id])
-
-  // guest RSVP (NOVO)
-  @@unique([guest_email, event_id])
+  events           events     @relation(fields: [event_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users            users?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([event_id], map: "idx_eventreg_event")
   @@index([user_id], map: "idx_eventreg_user")
+
+  @@unique([user_id, event_id])
+  @@unique([guest_email, event_id])
 }
 
 model events {
@@ -79,16 +52,16 @@ model events {
   created_by         Int
   created_at         DateTime?            @default(now()) @db.Timestamp(6)
   updated_at         DateTime?            @default(now()) @db.Timestamp(6)
-  slug               String?              @unique
-  timezone           String               @default("UTC")
-  visibility         EventVisibility      @default(Public)
-  status             EventStatus          @default(Draft)
   capacity           Int                  @default(10)
-  venue_id           Int?
   deleted            Boolean              @default(false)
+  slug               String?              @unique
+  status             EventStatus          @default(Draft)
+  timezone           String               @default("UTC")
+  venue_id           Int?
+  visibility         EventVisibility      @default(Public)
   event_registration event_registration[]
-  venues             venues?              @relation(fields: [venue_id], references: [id])
   users              users                @relation(fields: [created_by], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  venues             venues?              @relation(fields: [venue_id], references: [id])
   outbox_emails      outbox_emails[]      @relation("EventOutboxEmails")
 
   @@index([created_by], map: "idx_events_created_by")
@@ -112,31 +85,22 @@ model post_likes {
 model posts {
   id          Int          @id @default(autoincrement())
   user_id     Int
-
-  // BLOG POLJA
-  title       String       @db.VarChar(255)
-  category    String       @db.VarChar(100)
-  short_desc  String       @db.VarChar(500)
   content     String
-  image_url   String?
-  read_time   String?      @db.VarChar(50)
-
-  // STATUSI
-  is_approved Boolean      @default(false)
-  is_deleted  Boolean      @default(false)
-
-  // TIMESTAMPS
   created_at  DateTime?    @default(now()) @db.Timestamp(6)
   updated_at  DateTime?    @default(now()) @updatedAt @db.Timestamp(6)
-
-  // RELACIJE
+  image_url   String?
+  category    String
+  is_approved Boolean      @default(false)
+  is_deleted  Boolean      @default(false)
+  read_time   String?
+  short_desc  String
+  title       String
   comments    comments[]
   post_likes  post_likes[]
   users       users        @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([created_at(sort: Desc)], map: "idx_posts_created_at")
   @@index([user_id], map: "idx_posts_user_id")
-  @@index([is_approved], map: "idx_posts_is_approved")
 }
 
 model private_messages {
@@ -169,20 +133,27 @@ model users {
   occupation                                           String?              @db.VarChar(255)
   created_at                                           DateTime?            @default(now()) @db.Timestamp(6)
   updated_at                                           DateTime?            @default(now()) @db.Timestamp(6)
-  work_location                                        String?              @db.VarChar(255)
-  is_public                                            Boolean              @default(true)
   cv_url                                               String?              @db.VarChar(255)
+  is_public                                            Boolean              @default(true)
+  work_location                                        String?              @db.VarChar(255)
   position                                             String?              @db.VarChar(255)
   study_direction                                      String?              @db.VarChar(255)
   study_level                                          String?              @db.VarChar(255)
+  defense_date                                         DateTime?            @db.Date
+  mentor_first_name                                    String?              @db.VarChar(100)
+  mentor_last_name                                     String?              @db.VarChar(100)
+  thesis_document_url                                  String?              @db.VarChar(255)
+  thesis_title                                         String?              @db.VarChar(255)
+  thesis_type                                          String?              @db.VarChar(50)
   comments                                             comments[]
   event_registration                                   event_registration[]
   events                                               events[]
+  outbox_emails                                        outbox_emails[]      @relation("UserOutboxEmails")
   post_likes                                           post_likes[]
   posts                                                posts[]
   private_messages_private_messages_receiver_idTousers private_messages[]   @relation("private_messages_receiver_idTousers")
   private_messages_private_messages_sender_idTousers   private_messages[]   @relation("private_messages_sender_idTousers")
-  outbox_emails                                        outbox_emails[]      @relation("UserOutboxEmails")
+  theses                                               theses[]
 
   @@index([enrollment_year], map: "idx_users_graduation_year")
 }
@@ -192,8 +163,8 @@ model venues {
   name       String   @unique
   address    String?
   capacity   Int?
-  events     events[]
   created_at DateTime @default(now())
+  events     events[]
 }
 
 model outbox_emails {
@@ -203,17 +174,15 @@ model outbox_emails {
   body       String
   sent       Boolean  @default(false)
   created_at DateTime @default(now())
-
-  user_id  Int?
-  event_id Int?
-
-  user  users?  @relation(fields: [user_id], references: [id], name: "UserOutboxEmails")
-  event events? @relation(fields: [event_id], references: [id], name: "EventOutboxEmails")
+  event_id   Int?
+  user_id    Int?
+  event      events?  @relation("EventOutboxEmails", fields: [event_id], references: [id])
+  user       users?   @relation("UserOutboxEmails", fields: [user_id], references: [id])
 }
 
 model contact_inquiries {
   id         Int       @id @default(autoincrement())
-  full_name  String    @db.VarChar(150)
+  full_name  String    @db.VarChar(255)
   email      String    @db.VarChar(255)
   subject    String    @db.VarChar(255)
   message    String
@@ -221,6 +190,39 @@ model contact_inquiries {
   read_at    DateTime? @db.Timestamp(6)
   deleted    Boolean   @default(false)
 
-  @@index([created_at(sort: Desc)], map: "idx_contact_inquiries_created_at")
-  @@index([deleted], map: "idx_contact_inquiries_deleted")
+  @@index([created_at(sort: Desc)], map: "idx_contact_created_at")
+}
+
+model theses {
+  id                Int       @id @default(autoincrement())
+  user_id           Int
+  title             String    @db.VarChar(255)
+  thesis_type       String    @db.VarChar(50)
+  mentor_first_name String?   @db.VarChar(100)
+  mentor_last_name  String?   @db.VarChar(100)
+  defense_date      DateTime? @db.Date
+  file_url          String?   @db.VarChar(255)
+  created_at        DateTime  @default(now()) @db.Timestamp(6)
+  users             users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id], map: "idx_theses_user_id")
+}
+
+enum EventVisibility {
+  Public
+  Members
+  Private
+}
+
+enum EventStatus {
+  Draft
+  Published
+  Archived
+}
+
+enum RSVPStatus {
+  Interested
+  Going
+  Declined
+  Waitlist
 }

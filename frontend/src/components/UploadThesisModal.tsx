@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
+import { uploadThesis, Thesis } from '../services/thesesService';
 
 interface UploadThesisFormData {
-    thesisType: 'bachelors' | 'masters' | 'specialist' | '';
+    thesisType: string;
     file: File | null;
     title: string;
     year: string;
@@ -10,14 +11,8 @@ interface UploadThesisFormData {
 
 interface UploadThesisModalProps {
     isOpen: boolean;
-    onClose: () => void;
-    thesisContext?: {
-        ime: string;
-        prezime: string;
-        naziv: string;
-        datum: string;
-        type: string;
-    };
+    onClose: (updatedData?: { id: number, thesis_title: string, thesis_document_url: string }) => void;
+    thesisContext?: Thesis | null;
 }
 
 const UploadThesisModal: React.FC<UploadThesisModalProps> = ({ isOpen, onClose, thesisContext }) => {
@@ -32,6 +27,7 @@ const UploadThesisModal: React.FC<UploadThesisModalProps> = ({ isOpen, onClose, 
         thesisType?: string;
         file?: string;
     }>({});
+    const [loading, setLoading] = useState(false);
 
     if (!isOpen) return null;
 
@@ -51,7 +47,7 @@ const UploadThesisModal: React.FC<UploadThesisModalProps> = ({ isOpen, onClose, 
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         // Validate required fields
@@ -70,30 +66,38 @@ const UploadThesisModal: React.FC<UploadThesisModalProps> = ({ isOpen, onClose, 
             return;
         }
 
-        // Prepare data for console output
-        const outputData = {
-            thesisType: formData.thesisType,
-            file: formData.file,
-            fileName: formData.file?.name,
-            fileSize: formData.file?.size,
-            ...(formData.title && { title: formData.title }),
-            ...(formData.year && { year: parseInt(formData.year) }),
-            ...(thesisContext && { selectedThesis: thesisContext }),
-        };
+        if (!thesisContext?.id) {
+            alert("Nedostaje ID studenta");
+            return;
+        }
 
-        console.log('=== Slanje forme za otpremanje rada ===');
-        console.log(outputData);
-        console.log('=====================================');
+        try {
+            setLoading(true);
+            const data = new FormData();
+            data.append('file', formData.file!);
+            data.append('title', formData.title);
+            data.append('thesisType', formData.thesisType);
 
-        // Reset form and close modal
-        setFormData({
-            thesisType: '',
-            file: null,
-            title: '',
-            year: '',
-        });
-        setErrors({});
-        onClose();
+            await uploadThesis(thesisContext.id, data);
+
+            // Re-fetch or update state is handled via onClose or in Parent
+            alert("Rad je uspešno otpremljen!");
+
+            // Reset form and close modal
+            setFormData({
+                thesisType: '',
+                file: null,
+                title: '',
+                year: '',
+            });
+            setErrors({});
+            onClose(); // We might want to pass data back to parent
+        } catch (err) {
+            console.error("Failed to upload thesis:", err);
+            alert("Došlo je do greške prilikom otpremanja rada.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleClose = () => {
@@ -133,16 +137,10 @@ const UploadThesisModal: React.FC<UploadThesisModalProps> = ({ isOpen, onClose, 
                 {thesisContext && (
                     <div className="px-6 pt-4 pb-2 bg-gray-50 border-b border-gray-200">
                         <p className="text-sm text-gray-600">
-                            <span className="font-semibold">Student:</span> {thesisContext.ime} {thesisContext.prezime}
+                            <span className="font-semibold">Student:</span> {thesisContext.first_name} {thesisContext.last_name}
                         </p>
                         <p className="text-sm text-gray-600">
-                            <span className="font-semibold">Originalni rad:</span> {thesisContext.naziv}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                            <span className="font-semibold">Tip:</span>{' '}
-                            {thesisContext.type === 'bachelors' && 'Osnovne studije'}
-                            {thesisContext.type === 'masters' && 'Master studije'}
-                            {thesisContext.type === 'specialist' && 'Specijalističke studije'}
+                            <span className="font-semibold">Postojeći naslov:</span> {thesisContext.thesis_title}
                         </p>
                     </div>
                 )}
@@ -165,9 +163,9 @@ const UploadThesisModal: React.FC<UploadThesisModalProps> = ({ isOpen, onClose, 
                                 }`}
                         >
                             <option value="" className="text-gray-500">Izaberite tip rada...</option>
-                            <option value="bachelors" className="text-black">Osnovne studije</option>
-                            <option value="masters" className="text-black">Master studije</option>
-                            <option value="specialist" className="text-black">Specijalističke studije</option>
+                            <option value="Osnovne studije" className="text-black">Osnovne studije</option>
+                            <option value="Master studije" className="text-black">Master studije</option>
+                            <option value="Specijalističke studije" className="text-black">Specijalističke studije</option>
                         </select>
                         {errors.thesisType && (
                             <p className="mt-1 text-sm text-red-500">{errors.thesisType}</p>
@@ -240,9 +238,15 @@ const UploadThesisModal: React.FC<UploadThesisModalProps> = ({ isOpen, onClose, 
                         </button>
                         <button
                             type="submit"
-                            className="flex-1 px-4 py-2 bg-[#294a70] text-white rounded-md hover:bg-[#1f3a5a] transition-colors font-medium"
+                            disabled={loading}
+                            className={`flex-1 px-4 py-2 bg-[#294a70] text-white rounded-md hover:bg-[#1f3a5a] transition-colors font-medium flex items-center justify-center gap-2 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                         >
-                            Otpremi
+                            {loading ? (
+                                <>
+                                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                    <span>Slanje...</span>
+                                </>
+                            ) : 'Otpremi'}
                         </button>
                     </div>
                 </form>

@@ -98,6 +98,26 @@ const Home: React.FC = () => {
           }
         }
 
+        @keyframes glow {
+          0%, 100% {
+            opacity: 0.3;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.5;
+            transform: scale(1.05);
+          }
+        }
+
+        @keyframes textShimmer {
+          0% {
+            background-position: -200% center;
+          }
+          100% {
+            background-position: 200% center;
+          }
+        }
+
         .animate-fade-in {
           animation: fadeIn 0.6s ease-out forwards;
         }
@@ -106,8 +126,26 @@ const Home: React.FC = () => {
           animation: slideUp 0.6s ease-out forwards;
         }
 
+        .animate-glow {
+          animation: glow 3s ease-in-out infinite;
+        }
+
+        .text-shimmer {
+          background: linear-gradient(90deg, #ffffff 25%, #f0f0f0 50%, #ffffff 75%);
+          background-size: 200% 100%;
+          animation: textShimmer 3s ease-in-out infinite;
+          -webkit-background-clip: text;
+          background-clip: text;
+        }
+
         .countdown-number {
           transition: all 0.3s ease;
+        }
+
+        /* Glass morphism effect */
+        .glass-effect {
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
         }
       `}</style>
 
@@ -117,11 +155,23 @@ const Home: React.FC = () => {
             <div className="flex flex-col items-center">
               {/* Header with fade-in animation */}
               <div className="mb-12 text-center md:mb-18 lg:mb-20 animate-fade-in opacity-0" style={{ animationDelay: '200ms' }}>
-                <div className="w-full max-w-lg">
-                  <h2 className="mb-5 text-5xl font-bold md:mb-6 md:text-7xl lg:text-8xl text-white">
-                    {t('home.heading')}
-                  </h2>
-                  <p className="md:text-md text-white">{t('home.description')}</p>
+                <div className="w-full max-w-4xl">
+                  {/* Gradient background for title */}
+                  <div className="relative mb-8">
+                    <h2 className="mb-5 text-5xl font-bold md:mb-6 md:text-7xl lg:text-8xl 
+                                   bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent
+                                   drop-shadow-2xl relative z-10">
+                      {t('home.heading')}
+                    </h2>
+                  </div>
+                  
+                  {/* Enhanced description with better typography */}
+                  <div className="relative">
+                    <p className="text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed font-light
+                                  max-w-3xl mx-auto">
+                      {t('home.description')}
+                    </p>
+                  </div>
                 </div>
               </div>
 
@@ -141,12 +191,15 @@ const Home: React.FC = () => {
                         src={section.image.src}
                         alt={section.image.alt}
                         className="max-[950px]:w-[88vw] max-[950px]:min-w-[120px] max-[950px]:max-w-[250px] rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                        loading="lazy"
                       />
                     </div>
-                    <h3 className="mb-5 text-2xl font-bold md:mb-6 md:text-3xl md:leading-[1.3] lg:text-4xl text-white">
+                    <h3 className="mb-5 text-2xl font-bold md:mb-6 md:text-3xl md:leading-[1.3] lg:text-4xl 
+                                   bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent
+                                   drop-shadow-2xl">
                       {section.heading}
                     </h3>
-                    <p className="text-white">{section.description}</p>
+                    <p className="text-lg md:text-xl text-gray-200 leading-relaxed font-light">{section.description}</p>
                   </div>
                 ))}
               </div>

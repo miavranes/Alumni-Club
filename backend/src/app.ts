@@ -17,6 +17,7 @@ import eventsRoutes from "./routes/events.routes";
 // NEW
 import contactRoutes from "./routes/contact.routes";
 import adminInquiriesRoutes from "./routes/admin.inquiries.routes";
+import thesesRoutes from "./routes/theses.routes";
 
 const app = express();
 
@@ -50,5 +51,6 @@ app.put("/api/profile", authenticate, updateMyProfile);
 // NEW ROUTES
 app.use("/api/contact", contactRoutes);
 app.use("/api/admin/inquiries", adminInquiriesRoutes);
+app.use("/api/theses", thesesRoutes);
 
 export default app;
