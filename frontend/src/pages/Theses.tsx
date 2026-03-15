@@ -843,6 +843,13 @@ export default function DiplomskiRadovi() {
                         </div>
                       )}
                     </div>
+
+                    {/* Termin odbrane */}
+                    {p.defense_date && (
+                      <div className="text-xs text-gray-400 mb-2">
+                        Odbrana: {new Date(p.defense_date).toLocaleDateString('sr-Latn-ME', { day: '2-digit', month: '2-digit', year: 'numeric' })} u {new Date(p.defense_date).toLocaleTimeString('sr-Latn-ME', { hour: '2-digit', minute: '2-digit' })}
+                      </div>
+                    )}
                     
                     {/* Abstract dugme */}
                     {p.abstract && (
