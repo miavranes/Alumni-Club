@@ -329,6 +329,9 @@ export default function DiplomskiRadovi() {
     const searchLower = normalizeName(searchTerm.toLowerCase());
 
     // Pretraga po SVIM poljima (normalizovano)
+    const yearStr = (p.year || "").toString();
+
+    // Pretraga po SVIM poljima (normalizovano)
     const matchesSearch = searchTerm === "" || 
       firstName.includes(searchLower) ||
       lastName.includes(searchLower) ||
@@ -341,7 +344,8 @@ export default function DiplomskiRadovi() {
       topic.includes(searchLower) ||
       abstract.includes(searchLower) ||
       grade.includes(searchLower) ||
-      language.includes(searchLower);
+      language.includes(searchLower) ||
+      yearStr.includes(searchLower);
 
     // Filter po tipu rada
     const matchesType = thesisTypeFilter === "all" || p.type === thesisTypeFilter;
