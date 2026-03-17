@@ -1043,17 +1043,6 @@ export default function DiplomskiRadovi() {
                 </p>
               </div>
 
-              {/* Masters */}
-              <div className="bg-white border-2 border-green-400 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xs font-bold uppercase tracking-wide text-gray-600">Master studije</h3>
-                  <span className="text-3xl">🎯</span>
-                </div>
-                <p className="text-5xl font-bold text-green-600">
-                  {podaci.filter(p => p.type === "masters").length}
-                </p>
-              </div>
-
               {/* Specialist */}
               <div className="bg-white border-2 border-purple-400 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
                 <div className="flex items-center justify-between mb-3">
@@ -1062,6 +1051,17 @@ export default function DiplomskiRadovi() {
                 </div>
                 <p className="text-5xl font-bold text-purple-600">
                   {podaci.filter(p => p.type === "specialist").length}
+                </p>
+              </div>
+
+              {/* Masters */}
+              <div className="bg-white border-2 border-green-400 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xs font-bold uppercase tracking-wide text-gray-600">Master studije</h3>
+                  <span className="text-3xl">🎯</span>
+                </div>
+                <p className="text-5xl font-bold text-green-600">
+                  {podaci.filter(p => p.type === "masters").length}
                 </p>
               </div>
             </div>
