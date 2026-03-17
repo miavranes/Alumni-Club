@@ -1137,12 +1137,12 @@ export default function DiplomskiRadovi() {
                   <span className="text-sm font-semibold text-gray-700">Osnovne studije</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 bg-green-500 border-2 border-green-700 rounded shadow-sm"></div>
-                  <span className="text-sm font-semibold text-gray-700">Master studije</span>
-                </div>
-                <div className="flex items-center gap-2">
                   <div className="w-5 h-5 bg-purple-500 border-2 border-purple-700 rounded shadow-sm"></div>
                   <span className="text-sm font-semibold text-gray-700">Specijalističke studije</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 bg-green-500 border-2 border-green-700 rounded shadow-sm"></div>
+                  <span className="text-sm font-semibold text-gray-700">Master studije</span>
                 </div>
               </div>
             </div>
@@ -1159,8 +1159,8 @@ export default function DiplomskiRadovi() {
                     <tr className="bg-gradient-to-r from-[#294a70] to-[#3d5a7f] text-white">
                       <th className="px-4 py-3 text-left font-semibold border-r border-white/20">Godina</th>
                       <th className="px-4 py-3 text-center font-semibold border-r border-white/20">Osnovne studije</th>
-                      <th className="px-4 py-3 text-center font-semibold border-r border-white/20">Master studije</th>
                       <th className="px-4 py-3 text-center font-semibold border-r border-white/20">Specijalističke</th>
+                      <th className="px-4 py-3 text-center font-semibold border-r border-white/20">Master studije</th>
                       <th className="px-4 py-3 text-center font-semibold">Ukupno</th>
                     </tr>
                   </thead>
@@ -1181,13 +1181,13 @@ export default function DiplomskiRadovi() {
                             </span>
                           </td>
                           <td className="px-4 py-3 text-center border-b border-gray-200">
-                            <span className="inline-block bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-full">
-                              {stats.masters}
+                            <span className="inline-block bg-purple-100 text-purple-700 font-semibold px-3 py-1 rounded-full">
+                              {stats.specialist}
                             </span>
                           </td>
                           <td className="px-4 py-3 text-center border-b border-gray-200">
-                            <span className="inline-block bg-purple-100 text-purple-700 font-semibold px-3 py-1 rounded-full">
-                              {stats.specialist}
+                            <span className="inline-block bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-full">
+                              {stats.masters}
                             </span>
                           </td>
                           <td className="px-4 py-3 text-center border-b border-gray-200">
@@ -1205,9 +1205,11 @@ export default function DiplomskiRadovi() {
                         {podaci.filter(p => p.type === "bachelors").length}
                       </td>
                       <td className="px-4 py-4 text-center text-lg">
-                        {podaci.filter(p => p.type === "masters").length}
+                        {podaci.filter(p => p.type === "specialist").length}
                       </td>
                       <td className="px-4 py-4 text-center text-lg">
+                        {podaci.filter(p => p.type === "masters").length}
+                      </td>
                         {podaci.filter(p => p.type === "specialist").length}
                       </td>
                       <td className="px-4 py-4 text-center text-xl">
