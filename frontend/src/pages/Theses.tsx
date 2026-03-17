@@ -294,7 +294,7 @@ export default function DiplomskiRadovi() {
   // Mapiranje jezika na puni naziv
   const languageNames: { [key: string]: string } = {
     'en': 'English',
-    'cg': 'Crna Gora'
+    'cg': 'Crnogorski'
   };
 
   // Filtriranje - napredna pretraga
@@ -793,18 +793,18 @@ export default function DiplomskiRadovi() {
                     {/* Autor i Mentor */}
                     <div className="flex flex-wrap gap-4 mb-3 text-sm">
                       <div>
-                        <span className="font-semibold text-gray-700">Autor:</span>{' '}
+                        <span className="font-semibold text-gray-700">{p.language === 'en' ? 'Author:' : 'Autor:'}</span>{' '}
                         <span className="text-gray-600">{p.first_name} {p.last_name}</span>
                       </div>
                       {p.mentor && (
                         <div>
-                          <span className="font-semibold text-gray-700">Mentor:</span>{' '}
+                          <span className="font-semibold text-gray-700">{p.language === 'en' ? 'Supervisor:' : 'Mentor:'}</span>{' '}
                           <span className="text-gray-600">{p.mentor}</span>
                         </div>
                       )}
                       {p.language && (
                         <div>
-                          <span className="font-semibold text-gray-700">Jezik:</span>{' '}
+                          <span className="font-semibold text-gray-700">{p.language === 'en' ? 'Language:' : 'Jezik:'}</span>{' '}
                           <span className="text-gray-600">{languageNames[p.language] || p.language}</span>
                         </div>
                       )}
@@ -821,7 +821,7 @@ export default function DiplomskiRadovi() {
                     {p.abstract && (
                       <details className="mt-3">
                         <summary className="cursor-pointer text-[#294a70] font-semibold hover:underline inline-flex items-center gap-2">
-                          ▸ Abstract [en]
+                          ▸ {p.language === 'en' ? 'Abstract [en]' : 'Apstrakt [cg]'}
                         </summary>
                         <div className="mt-3 p-4 bg-gray-50 rounded-lg border border-gray-200 text-sm text-gray-700 leading-relaxed">
                           {p.abstract}
