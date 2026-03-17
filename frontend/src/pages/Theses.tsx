@@ -34,7 +34,6 @@ export default function DiplomskiRadovi() {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [selectedMentor, setSelectedMentor] = useState<string>("all");
   const [selectedGrade, setSelectedGrade] = useState<string>("all");
-  const [selectedTopic, setSelectedTopic] = useState<string>("all");
   const [selectedYear, setSelectedYear] = useState<string>("all");
   const [selectedLanguage, setSelectedLanguage] = useState<string>("all");
   const [hoveredYear, setHoveredYear] = useState<number | null>(null);
@@ -287,19 +286,8 @@ export default function DiplomskiRadovi() {
     });
     return Object.values(seen).sort();
   };
-  const getUniqueTopics = () => {
-    const seen: { [key: string]: string } = {};
-    podaci.forEach(p => {
-      if (p.topic) {
-        const normalized = normalizeName(p.topic);
-        if (!seen[normalized]) seen[normalized] = p.topic;
-      }
-    });
-    return Object.values(seen).sort();
-  };
   const uniqueMentors = getUniqueMentors();
   const uniqueGrades = Array.from(new Set(podaci.map(p => p.grade).filter(Boolean))).sort();
-  const uniqueTopics = getUniqueTopics();
   const uniqueYears = Array.from(new Set(podaci.map(p => p.year).filter(Boolean))).sort((a, b) => b - a);
   const uniqueLanguages = Array.from(new Set(podaci.map(p => p.language).filter(Boolean))).sort();
 
@@ -318,7 +306,6 @@ export default function DiplomskiRadovi() {
     const mentor = normalizeName((p.mentor || "").toLowerCase());
     const keywords = normalizeName((p.keywords || "").toLowerCase());
     const committeeMembers = normalizeName((p.committee_members || "").toLowerCase());
-    const topic = normalizeName((p.topic || "").toLowerCase());
     const abstract = normalizeName((p.abstract || "").toLowerCase());
     const grade = (p.grade || "").toLowerCase();
     const language = (p.language || "").toLowerCase();
@@ -341,7 +328,6 @@ export default function DiplomskiRadovi() {
       mentor.includes(searchLower) ||
       keywords.includes(searchLower) ||
       committeeMembers.includes(searchLower) ||
-      topic.includes(searchLower) ||
       abstract.includes(searchLower) ||
       grade.includes(searchLower) ||
       language.includes(searchLower) ||
@@ -353,11 +339,10 @@ export default function DiplomskiRadovi() {
     // Napredni filteri (normalizovano poređenje)
     const matchesMentor = selectedMentor === "all" || normalizeName(p.mentor || "") === normalizeName(selectedMentor);
     const matchesGrade = selectedGrade === "all" || p.grade === selectedGrade;
-    const matchesTopic = selectedTopic === "all" || normalizeName(p.topic || "") === normalizeName(selectedTopic);
     const matchesYear = selectedYear === "all" || p.year?.toString() === selectedYear;
     const matchesLanguage = selectedLanguage === "all" || p.language === selectedLanguage;
 
-    return matchesSearch && matchesType && matchesMentor && matchesGrade && matchesTopic && matchesYear && matchesLanguage;
+    return matchesSearch && matchesType && matchesMentor && matchesGrade && matchesYear && matchesLanguage;
   });
 
   // Sortiranje
@@ -389,7 +374,6 @@ export default function DiplomskiRadovi() {
                       thesisTypeFilter !== "all" || 
                       selectedMentor !== "all" || 
                       selectedGrade !== "all" || 
-                      selectedTopic !== "all" || 
                       selectedYear !== "all" ||
                       selectedLanguage !== "all";
 
@@ -402,7 +386,7 @@ export default function DiplomskiRadovi() {
   // Reset na prvu stranicu kada se promeni pretraga ili filter
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, thesisTypeFilter, sortBy, selectedMentor, selectedGrade, selectedTopic, selectedYear, selectedLanguage]);
+  }, [searchTerm, thesisTypeFilter, sortBy, selectedMentor, selectedGrade, selectedYear, selectedLanguage]);
 
   return (
     <div className="w-full min-h-screen bg-white flex flex-col">
@@ -674,23 +658,6 @@ export default function DiplomskiRadovi() {
                   </div>
                 )}
 
-                {/* Tema */}
-                {uniqueTopics.length > 0 && (
-                  <div className="mb-6">
-                    <h4 className="font-semibold text-sm text-gray-700 mb-2">Tema</h4>
-                    <select
-                      value={selectedTopic}
-                      onChange={(e) => setSelectedTopic(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#294a70]"
-                    >
-                      <option value="all">Sve teme</option>
-                      {uniqueTopics.map(topic => (
-                        <option key={topic} value={topic}>{topic}</option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-
                 {/* Godina */}
                 {uniqueYears.length > 0 && (
                   <div className="mb-6">
@@ -733,7 +700,6 @@ export default function DiplomskiRadovi() {
                     setThesisTypeFilter("all");
                     setSelectedMentor("all");
                     setSelectedGrade("all");
-                    setSelectedTopic("all");
                     setSelectedYear("all");
                     setSelectedLanguage("all");
                     setSearchTerm("");

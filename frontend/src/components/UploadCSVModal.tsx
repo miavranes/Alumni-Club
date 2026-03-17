@@ -83,7 +83,6 @@ const UploadCSVModal: React.FC<UploadCSVModalProps> = ({
                 <div><span className="font-semibold">type</span> – tip rada: bachelors, masters ili specialist</div>
                 <div><span className="font-semibold">year</span> – godina odbrane (broj, npr. 2024)</div>
                 <div><span className="font-semibold">mentor</span> – mentor (npr. "Prof. dr Ivan Petrović")</div>
-                <div><span className="font-semibold">topic</span> – tema rada (npr. "Machine Learning")</div>
                 <div><span className="font-semibold">keywords</span> – ključne riječi, odvojene zarezom</div>
               </div>
             </div>
@@ -119,9 +118,9 @@ const UploadCSVModal: React.FC<UploadCSVModalProps> = ({
             <p className="font-semibold text-[#2a3c60] mb-2">Primjer CSV formata:</p>
             <div className="mt-2 bg-white border border-[#8ba8d1] rounded-md p-3 overflow-x-auto">
               <pre className="text-[11px] leading-5 text-[#1f2a44]" style={{whiteSpace: 'pre'}}>
-{`first_name,last_name,title,subtitle,title_language,additional_title,additional_subtitle,additional_title_language,type,year,file_url,zip_file,mentor,committee_members,grade,topic,keywords,language,abstract,defense_date
-Marko,Marković,Primena mašinskog učenja u analizi podataka,,cg,Application of Machine Learning in Data Analysis,,en,bachelors,2024,https://example.com/rad1.pdf,,Prof. dr Ivan Petrović,"Prof. dr Ivan Petrović, Doc. dr Ana Jovanović, Prof. dr Marija Nikolić",A,Machine Learning,"AI, Machine Learning, Neural Networks",cg,"Ovaj rad istražuje primenu mašinskog učenja u analizi velikih skupova podataka.",2024-06-15 10:00:00
-Ana,Jovanović,Deep Learning for Image Recognition,A Comprehensive Study,en,Duboko učenje za prepoznavanje slika,Sveobuhvatna studija,cg,masters,2024,https://example.com/rad2.pdf,,Prof. dr Marija Nikolić,"Prof. dr Stefan Đorđević, Doc. dr Jelena Marković",A,Deep Learning,"Deep Learning, Computer Vision, AI",en,"This thesis explores deep learning techniques for image recognition.",2024-08-05 15:00:00`}
+{`first_name,last_name,title,subtitle,title_language,additional_title,additional_subtitle,additional_title_language,type,year,file_url,zip_file,mentor,committee_members,grade,keywords,language,abstract,defense_date
+Marko,Marković,Primena mašinskog učenja u analizi podataka,,cg,Application of Machine Learning in Data Analysis,,en,bachelors,2024,https://example.com/rad1.pdf,,Prof. dr Ivan Petrović,"Prof. dr Ivan Petrović, Doc. dr Ana Jovanović, Prof. dr Marija Nikolić",A,"AI, Machine Learning, Neural Networks",cg,"Ovaj rad istražuje primenu mašinskog učenja u analizi velikih skupova podataka.",2024-06-15 10:00:00
+Ana,Jovanović,Deep Learning for Image Recognition,A Comprehensive Study,en,Duboko učenje za prepoznavanje slika,Sveobuhvatna studija,cg,masters,2024,https://example.com/rad2.pdf,,Prof. dr Marija Nikolić,"Prof. dr Stefan Đorđević, Doc. dr Jelena Marković",A,"Deep Learning, Computer Vision, AI",en,"This thesis explores deep learning techniques for image recognition.",2024-08-05 15:00:00`}
               </pre>
             </div>
           </div>
@@ -162,4 +161,5 @@ Ana,Jovanović,Deep Learning for Image Recognition,A Comprehensive Study,en,Dubo
 };
 
 export default UploadCSVModal;
+
 

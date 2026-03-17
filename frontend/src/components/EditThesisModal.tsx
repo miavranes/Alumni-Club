@@ -62,7 +62,6 @@ const EditThesisModal: React.FC<EditThesisModalProps> = ({
     mentor: "",
     committee_members: "",
     grade: "",
-    topic: "",
     keywords: "",
     language: "",
     abstract: "",
@@ -122,7 +121,6 @@ const EditThesisModal: React.FC<EditThesisModalProps> = ({
         mentor: thesis.mentor || "",
         committee_members: thesis.committee_members || "",
         grade: thesis.grade || "",
-        topic: thesis.topic || "",
         keywords: thesis.keywords || "",
         language: thesis.language || "",
         abstract: thesis.abstract || "",
@@ -798,20 +796,6 @@ const EditThesisModal: React.FC<EditThesisModalProps> = ({
                 <option value="en">English</option>
               </select>
             </div>
-          </div>
-
-          {/* Tema */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Tema rada *</label>
-            <input
-              type="text"
-              name="topic"
-              value={formData.topic}
-              onChange={handleChange}
-              required
-              placeholder="Machine Learning"
-              className="w-full px-4 py-2 border rounded-lg"
-            />
           </div>
 
           {/* Ključne riječi */}
