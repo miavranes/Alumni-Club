@@ -245,7 +245,6 @@ model theses {
   mentor            String?  @db.VarChar(255)
   committee_members String?  @db.Text // JSON array ili comma-separated
   grade             String?  @db.VarChar(10) // A, B, C, D, E, F
-  topic             String?  @db.VarChar(255)
   keywords          String?  @db.Text // JSON array ili comma-separated
   language          String?  @db.VarChar(50) // Jezik rada (npr. "English", "Serbian")
   
@@ -264,7 +263,6 @@ model theses {
   
   @@index([mentor])
   @@index([grade])
-  @@index([topic])
   @@index([language])
 }
 
