@@ -507,16 +507,16 @@ export default function DiplomskiRadovi() {
                   Osnovne studije
                 </button>
                 <button
-                  onClick={() => { setThesisTypeFilter("masters"); setShowFilter(false); }}
-                  className={`w-full text-left px-4 py-3 text-sm text-white transition-all ${thesisTypeFilter === "masters" ? "bg-[#1f3a5a] font-semibold" : "hover:bg-[#1f3a5a]"}`}
-                >
-                  Master studije
-                </button>
-                <button
                   onClick={() => { setThesisTypeFilter("specialist"); setShowFilter(false); }}
                   className={`w-full text-left px-4 py-3 text-sm text-white transition-all ${thesisTypeFilter === "specialist" ? "bg-[#1f3a5a] font-semibold" : "hover:bg-[#1f3a5a]"}`}
                 >
                   Specijalističke studije
+                </button>
+                <button
+                  onClick={() => { setThesisTypeFilter("masters"); setShowFilter(false); }}
+                  className={`w-full text-left px-4 py-3 text-sm text-white transition-all ${thesisTypeFilter === "masters" ? "bg-[#1f3a5a] font-semibold" : "hover:bg-[#1f3a5a]"}`}
+                >
+                  Master studije
                 </button>
               </div>
             </div>
@@ -605,21 +605,21 @@ export default function DiplomskiRadovi() {
                       <input
                         type="radio"
                         name="type"
-                        checked={thesisTypeFilter === "masters"}
-                        onChange={() => setThesisTypeFilter("masters")}
-                        className="text-[#294a70]"
-                      />
-                      <span className="text-sm">Master ({podaci.filter(p => p.type === "masters").length})</span>
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="type"
                         checked={thesisTypeFilter === "specialist"}
                         onChange={() => setThesisTypeFilter("specialist")}
                         className="text-[#294a70]"
                       />
                       <span className="text-sm">Specijalističke ({podaci.filter(p => p.type === "specialist").length})</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="type"
+                        checked={thesisTypeFilter === "masters"}
+                        onChange={() => setThesisTypeFilter("masters")}
+                        className="text-[#294a70]"
+                      />
+                      <span className="text-sm">Master ({podaci.filter(p => p.type === "masters").length})</span>
                     </label>
                   </div>
                 </div>
