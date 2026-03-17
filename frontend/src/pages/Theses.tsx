@@ -1210,8 +1210,6 @@ export default function DiplomskiRadovi() {
                       <td className="px-4 py-4 text-center text-lg">
                         {podaci.filter(p => p.type === "masters").length}
                       </td>
-                        {podaci.filter(p => p.type === "specialist").length}
-                      </td>
                       <td className="px-4 py-4 text-center text-xl">
                         {podaci.length}
                       </td>
