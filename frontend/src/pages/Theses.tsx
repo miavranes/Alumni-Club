@@ -819,7 +819,7 @@ export default function DiplomskiRadovi() {
                     {p.abstract && (
                       <details className="mt-3">
                         <summary className="cursor-pointer text-[#294a70] font-semibold hover:underline inline-flex items-center gap-2">
-                          ▸ {p.language === 'en' ? 'Abstract [en]' : 'Apstrakt [cg]'}
+                          ▸ {p.language === 'en' ? 'Abstract [en]' : 'Sažetak [cg]'}
                         </summary>
                         <div className="mt-3 p-4 bg-gray-50 rounded-lg border border-gray-200 text-sm text-gray-700 leading-relaxed">
                           {p.abstract}
