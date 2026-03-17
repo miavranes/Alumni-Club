@@ -33,12 +33,66 @@ router.post("/upload-csv", upload.single("file"), async (req, res) => {
   }
 
   const filePath = req.file.path;
+  const normalizeTitle = (value: string) =>
+    value.trim().toLowerCase().replace(/\s+/g, " ");
 
   fs.createReadStream(filePath)
     .pipe(csv())
     .on("data", (data) => results.push(data))
     .on("end", async () => {
       try {
+        const seenTitles = new Map<string, number[]>();
+        results.forEach((row, index) => {
+          const title = (row.title || "").trim();
+          if (!title) {
+            throw new Error(`Red ${index + 2}: Naslov rada je obavezan`);
+          }
+          const normalized = normalizeTitle(title);
+          const rows = seenTitles.get(normalized) ?? [];
+          rows.push(index + 2);
+          seenTitles.set(normalized, rows);
+        });
+
+        const duplicateInCsv = Array.from(seenTitles.entries()).filter(([, rows]) => rows.length > 1);
+        if (duplicateInCsv.length > 0) {
+          const messages = duplicateInCsv.map(([normalized, rows]) => {
+            const originalTitle = results[rows[0] - 2]?.title || normalized;
+            return `"${originalTitle}" (redovi ${rows.join(", ")})`;
+          });
+          throw new Error(`Dupli naslovi u CSV: ${messages.join("; ")}`);
+        }
+
+        const uniqueTitles = Array.from(seenTitles.keys());
+        if (uniqueTitles.length > 0) {
+          const existing = await prisma.theses.findMany({
+            where: {
+              OR: uniqueTitles.map((title) => ({
+                title: { equals: title, mode: "insensitive" },
+              })),
+            },
+            select: { title: true },
+          });
+
+          if (existing.length > 0) {
+            const existingSet = new Set(existing.map((t) => normalizeTitle(t.title)));
+            const duplicatesWithDb = Array.from(seenTitles.entries())
+              .filter(([normalized]) => existingSet.has(normalized))
+              .map(([normalized, rows]) => {
+                const originalTitle = results[rows[0] - 2]?.title || normalized;
+                return `"${originalTitle}" (red ${rows[0]})`;
+              });
+
+            if (duplicatesWithDb.length > 0) {
+              if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+              }
+              return res.status(409).json({
+                message: `Naslovi vec postoje u bazi: ${duplicatesWithDb.join("; ")}`,
+              });
+            }
+          }
+        }
+
         const thesesData = results.map((row, index) => {
           const parsedYear = Number(row.year);
           if (Number.isNaN(parsedYear) || parsedYear < 1900 || parsedYear > 2100) {
@@ -62,7 +116,6 @@ router.post("/upload-csv", upload.single("file"), async (req, res) => {
             mentor: row.mentor && row.mentor.trim() ? row.mentor.trim() : null,
             committee_members: row.committee_members && row.committee_members.trim() ? row.committee_members.trim() : null,
             grade: row.grade && row.grade.trim() ? row.grade.trim().toUpperCase() : null,
-            topic: row.topic && row.topic.trim() ? row.topic.trim() : null,
             keywords: row.keywords && row.keywords.trim() ? row.keywords.trim() : null,
             language: row.language && row.language.trim() ? row.language.trim() : null,
             abstract: row.abstract && row.abstract.trim() ? row.abstract.trim() : null,
@@ -121,7 +174,6 @@ router.post("/", authenticate, async (req, res) => {
       mentor,
       committee_members,
       grade,
-      topic,
       keywords,
       language,
       abstract,
@@ -129,8 +181,8 @@ router.post("/", authenticate, async (req, res) => {
       user_id,
     } = req.body;
 
-    if (!first_name || !last_name || !title || !title_language || !type || !topic || !keywords || !mentor) {
-      return res.status(400).json({ message: "Obavezna polja nisu popunjena (ime, prezime, naslov, jezik naslova, tip, tema, ključne riječi, mentor)" });
+    if (!first_name || !last_name || !title || !title_language || !type || !keywords || !mentor) {
+      return res.status(400).json({ message: "Obavezna polja nisu popunjena (ime, prezime, naslov, jezik naslova, tip, ključne riječi, mentor)" });
     }
 
     const parsedYear = Number(year);
@@ -164,7 +216,6 @@ router.post("/", authenticate, async (req, res) => {
         mentor: mentor.trim(),
         committee_members: committee_members || null,
         grade: grade || null,
-        topic: topic.trim(),
         keywords: keywords.trim(),
         language: language || null,
         abstract: abstract || null,
@@ -210,7 +261,6 @@ router.get("/", async (req, res) => {
       mentor: t.mentor,
       committee_members: t.committee_members,
       grade: t.grade,
-      topic: t.topic,
       keywords: t.keywords,
       language: t.language,
       abstract: t.abstract,
@@ -453,7 +503,6 @@ router.put("/:id", authenticate, async (req, res) => {
       mentor,
       committee_members,
       grade,
-      topic,
       keywords,
       language,
       abstract,
@@ -491,7 +540,6 @@ router.put("/:id", authenticate, async (req, res) => {
         mentor: mentor !== undefined ? (mentor ? mentor.trim() : null) : existingThesis.mentor,
         committee_members: committee_members !== undefined ? committee_members : existingThesis.committee_members,
         grade: grade !== undefined ? grade : existingThesis.grade,
-        topic: topic !== undefined ? (topic ? topic.trim() : null) : existingThesis.topic,
         keywords: keywords !== undefined ? (keywords ? keywords.trim() : null) : existingThesis.keywords,
         language: language !== undefined ? language : existingThesis.language,
         abstract: abstract !== undefined ? abstract : existingThesis.abstract,
@@ -580,6 +628,7 @@ router.post("/:id/download", async (req, res) => {
 });
 
 export default router;
+
 
 
 

@@ -79,7 +79,6 @@ async function seedExtendedTheses() {
         mentor: mentors[i % mentors.length],
         committee_members: committeeMembers[i % committeeMembers.length],
         grade: grades[i % grades.length],
-        topic: topics[i % topics.length],
         keywords: keywordsList[i % keywordsList.length],
         abstract: abstracts[i % abstracts.length],
         user_id: users[0].id
