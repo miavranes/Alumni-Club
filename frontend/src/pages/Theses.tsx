@@ -783,9 +783,9 @@ export default function DiplomskiRadovi() {
                     
                     {/* Tip rada */}
                     <div className="text-sm text-gray-600 mb-3">
-                      {p.type === 'bachelors' && (p.language === 'en' ? "Bachelor's Thesis" : 'Završni rad — Osnovne studije')}
-                      {p.type === 'masters' && (p.language === 'en' ? "Master's Thesis" : 'Završni rad — Master studije')}
-                      {p.type === 'specialist' && (p.language === 'en' ? 'Specialist Thesis' : 'Završni rad — Specijalističke studije')}
+                      {p.type === 'bachelors' && (p.language === 'en' ? "Bachelor's Thesis — Basic Studies" : 'Diplomski rad — Osnovne studije')}
+                      {p.type === 'masters' && (p.language === 'en' ? "Master's Thesis — Master Studies" : 'Master rad — Master studije')}
+                      {p.type === 'specialist' && (p.language === 'en' ? 'Specialist Thesis — Specialist Studies' : 'Specijalistički rad — Specijalističke studije')}
                     </div>
                     
                     {/* Autor i Mentor */}
