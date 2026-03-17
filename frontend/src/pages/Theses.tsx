@@ -783,11 +783,9 @@ export default function DiplomskiRadovi() {
                     
                     {/* Tip rada */}
                     <div className="text-sm text-gray-600 mb-3">
-                      {p.type === 'bachelors' && 'Independent thesis Basic level, 10 credits / 15 HE credits'}
-                      {p.type === 'masters' && 'Independent thesis Advanced level, 20 credits / 30 HE credits'}
-                      {p.type === 'specialist' && 'Specialist thesis'}
-                      <br />
-                      Student thesis
+                      {p.type === 'bachelors' && (p.language === 'en' ? "Bachelor's Thesis" : 'Završni rad — Osnovne studije')}
+                      {p.type === 'masters' && (p.language === 'en' ? "Master's Thesis" : 'Završni rad — Master studije')}
+                      {p.type === 'specialist' && (p.language === 'en' ? 'Specialist Thesis' : 'Završni rad — Specijalističke studije')}
                     </div>
                     
                     {/* Autor i Mentor */}
