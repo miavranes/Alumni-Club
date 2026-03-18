@@ -90,7 +90,7 @@ function AboutUs() {
 
         {/* SECTION 1 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center mb-16 md:mb-24">
-          <div className="space-y-5 text-justify">
+          <div className="space-y-5">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#294a70] leading-tight">
               {t('aboutus.howItStarted')}
             </h2>
@@ -125,7 +125,7 @@ function AboutUs() {
             />
           </div>
           
-          <div className="space-y-5 text-justify order-2 lg:order-1">
+          <div className="space-y-5 order-2 lg:order-1">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#294a70] leading-tight">
               {t('aboutus.ourMission')}
             </h2>
@@ -142,7 +142,7 @@ function AboutUs() {
 
         {/* SECTION 3 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center mb-16 md:mb-24">
-          <div className="space-y-5 text-justify">
+          <div className="space-y-5">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#294a70] leading-tight">
               {t('aboutus.whatWeOffer')}
             </h2>
