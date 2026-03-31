@@ -20,7 +20,7 @@ const Home: React.FC = () => {
     const updateCountdown = () => {
       const now = new Date();
       // Kreiraj datum eksplicitno: godina, mjesec (0-11), dan
-      const targetDate = new Date(2026, 3, 2, 0, 0, 0);
+      const targetDate = new Date(2026, 4, 15, 0, 0, 0);
 
       console.log('Trenutno vrijeme:', now);
       console.log('Ciljni datum:', targetDate);
