@@ -107,11 +107,7 @@ function AboutUs() {
             <img 
               src={projekat} 
               alt="Alumni FIT projekat" 
-<<<<<<< HEAD
-              className="rounded-lg shadow-lg w-full h-64 object-cover hover:shadow-xl transition-shadow duration-300"
-=======
               className="rounded-lg shadow-lg w-full max-w-md h-64 lg:h-80 object-cover hover:shadow-xl transition-shadow duration-300"
->>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
               loading="lazy"
             />
           </div>
@@ -124,11 +120,7 @@ function AboutUs() {
             <img 
               src={konsultacija} 
               alt="Konsultacije i mentorstvo" 
-<<<<<<< HEAD
-              className="rounded-lg shadow-lg w-full h-64 object-cover hover:shadow-xl transition-shadow duration-300"
-=======
               className="rounded-lg shadow-lg w-full max-w-md h-64 lg:h-80 object-cover hover:shadow-xl transition-shadow duration-300"
->>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
               loading="lazy"
             />
           </div>
@@ -181,11 +173,7 @@ function AboutUs() {
             <img 
               src={event} 
               alt="Alumni eventi i aktivnosti" 
-<<<<<<< HEAD
-              className="rounded-lg shadow-lg w-full h-64 object-cover hover:shadow-xl transition-shadow duration-300"
-=======
               className="rounded-lg shadow-lg w-full max-w-md h-64 lg:h-80 object-cover hover:shadow-xl transition-shadow duration-300"
->>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
               loading="lazy"
             />
           </div>

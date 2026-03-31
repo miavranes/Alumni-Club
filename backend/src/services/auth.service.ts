@@ -1,7 +1,9 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import prisma from '../prisma';
-import { users } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+
+type users = Awaited<ReturnType<PrismaClient['users']['findUniqueOrThrow']>>;
 
 const JWT_SECRET = process.env.JWT_SECRET || 'change_this_secret';
 const TOKEN_EXPIRES_IN = '7d';

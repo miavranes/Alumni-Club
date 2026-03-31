@@ -153,10 +153,6 @@ model users {
   posts                                                posts[]
   private_messages_private_messages_receiver_idTousers private_messages[]   @relation("private_messages_receiver_idTousers")
   private_messages_private_messages_sender_idTousers   private_messages[]   @relation("private_messages_sender_idTousers")
-<<<<<<< HEAD
-=======
-  outbox_emails                                        outbox_emails[]      @relation("UserOutboxEmails")
->>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
   theses                                               theses[]
 
   @@index([enrollment_year], map: "idx_users_graduation_year")
@@ -194,44 +190,6 @@ model contact_inquiries {
   read_at    DateTime? @db.Timestamp(6)
   deleted    Boolean   @default(false)
 
-<<<<<<< HEAD
-  @@index([created_at(sort: Desc)], map: "idx_contact_created_at")
-}
-
-model theses {
-  id                Int       @id @default(autoincrement())
-  user_id           Int
-  title             String    @db.VarChar(255)
-  thesis_type       String    @db.VarChar(50)
-  mentor_first_name String?   @db.VarChar(100)
-  mentor_last_name  String?   @db.VarChar(100)
-  defense_date      DateTime? @db.Date
-  file_url          String?   @db.VarChar(255)
-  created_at        DateTime  @default(now()) @db.Timestamp(6)
-  users             users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@index([user_id], map: "idx_theses_user_id")
-}
-
-enum EventVisibility {
-  Public
-  Members
-  Private
-}
-
-enum EventStatus {
-  Draft
-  Published
-  Archived
-}
-
-enum RSVPStatus {
-  Interested
-  Going
-  Declined
-  Waitlist
-}
-=======
   @@index([created_at(sort: Desc)], map: "idx_contact_inquiries_created_at")
   @@index([deleted], map: "idx_contact_inquiries_deleted")
 }
@@ -278,4 +236,22 @@ model theses {
 
 
 
->>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
+
+enum EventVisibility {
+  Public
+  Members
+  Private
+}
+
+enum EventStatus {
+  Draft
+  Published
+  Archived
+}
+
+enum RSVPStatus {
+  Interested
+  Going
+  Declined
+  Waitlist
+}

@@ -1,17 +1,3 @@
-<<<<<<< HEAD
-import { Router } from "express";
-import { getTheses, deleteThesis, uploadThesis } from "../controllers/theses.controller";
-import { authenticate, requireAdmin } from "../middlewares/auth.middleware";
-import { uploadThesis as uploadMiddleware } from "../middlewares/upload.middleware";
-
-const router = Router();
-
-router.get("/", getTheses);
-router.delete("/:id", authenticate, requireAdmin, deleteThesis);
-router.post("/upload/:id", authenticate, requireAdmin, uploadMiddleware, uploadThesis);
-
-export default router;
-=======
 import express from "express";
 import multer from "multer";
 import fs from "fs";
@@ -642,15 +628,3 @@ router.post("/:id/download", async (req, res) => {
 });
 
 export default router;
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f

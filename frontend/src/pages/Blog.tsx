@@ -324,14 +324,6 @@ export const Blog = (props: BlogProps) => {
         <div className="container">
           <div className="mb-16 md:mb-20 lg:mb-24">
             <div className="mx-auto w-full max-w-4xl text-center">
-<<<<<<< HEAD
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-5 md:mb-6 py-3
-                             bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent
-                             drop-shadow-2xl">
-                {t("blog.heading")}
-              </h2>
-              <p className="text-lg md:text-xl text-gray-200 leading-relaxed font-light">{t("blog.description")}</p>
-=======
               <h2
                 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-5 md:mb-6 py-3
                              bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent
@@ -342,7 +334,6 @@ export const Blog = (props: BlogProps) => {
               <p className="text-lg md:text-xl text-gray-200 leading-relaxed font-light">
                 {t("blog.description")}
               </p>
->>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
             </div>
           </div>
 

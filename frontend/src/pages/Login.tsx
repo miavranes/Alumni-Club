@@ -70,13 +70,9 @@ export default function Login() {
     <div className="min-h-screen flex justify-center items-center p-5">
       <div className="w-full max-w-md p-10 bg-gray-50 rounded-2xl shadow-lg flex flex-col items-center text-center">
         <h2 className="text-4xl text-[#294a70] mb-3 font-bold">Prijava</h2>
-<<<<<<< HEAD
-        <h4 className="text-lg md:text-xl text-gray-600 leading-relaxed font-light mb-8">Unesite svoje podatke kako biste nastavili.</h4>
-=======
         <h4 className="text-lg md:text-xl text-gray-600 leading-relaxed font-light mb-8">
           Unesite svoje podatke kako biste nastavili.
         </h4>
->>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
 
         <form onSubmit={handleSubmit} className="w-full flex flex-col">
           <label

@@ -14,12 +14,9 @@ import eventsRoutes from "./routes/events.routes";
 import contactRoutes from "./routes/contact.routes";
 import adminInquiriesRoutes from "./routes/admin.inquiries.routes";
 import thesesRoutes from "./routes/theses.routes";
-<<<<<<< HEAD
-=======
 
 import { getMyProfile, updateMyProfile } from "./controllers/users.controller";
 import { authenticate } from "./middlewares/auth.middleware";
->>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
 
 const app = express();
 const uploadsRoot = path.join(__dirname, "..", "uploads");
@@ -78,12 +75,5 @@ app.use("/api", enrollRoutes);
 app.get("/api/profile", authenticate, getMyProfile);
 app.put("/api/profile", authenticate, updateMyProfile);
 
-<<<<<<< HEAD
-// NEW ROUTES
-app.use("/api/contact", contactRoutes);
-app.use("/api/admin/inquiries", adminInquiriesRoutes);
-app.use("/api/theses", thesesRoutes);
 
-=======
->>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
 export default app;
