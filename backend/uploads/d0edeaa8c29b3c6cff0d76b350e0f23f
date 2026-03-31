@@ -1,0 +1,6 @@
+first_name,last_name,title,type,year,file_url
+Marko,Markovic,Informacioni sistem biblioteke,bachelors,2021,https://example.com/rad1.pdf
+Ana,Petrovic,Web aplikacija za ucenje,masters,2022,https://example.com/rad2.pdf
+Ivan,Jovanovic,Sistem za upravljanje projektima,bachelors,2020,https://example.com/rad3.pdf
+Milos,Milovanovic,Sistem za kupovinu karti onlajn,bachelors,2019,https://example.com/rad4.pdf
+Jana,Dasic,Digitalni marketing,specialist,2018,https://example.com/rad5.pdf

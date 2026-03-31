@@ -71,7 +71,7 @@ function Footer() {
               {[
                 { icon: FaPhone, labelKey: 'footer.phone' as const, value: '+382 20 409 204' },
                 { icon: FaFax, labelKey: 'footer.fax' as const, value: '+382 20 409 232' },
-                { icon: FaEnvelope, labelKey: 'footer.email' as const, value: 'info@alumni-fit.com' }
+                { icon: FaEnvelope, labelKey: 'footer.email' as const, value: 'fit.alumni.club@gmail.com' }
               ].map((item, index) => (
                 <div key={index} className="group relative">
                   <div className="relative bg-white/5 backdrop-blur-xl rounded-xl p-5 border border-white/20 hover:border-[#ffab1f] transition-all duration-300">

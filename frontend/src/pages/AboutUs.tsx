@@ -1,8 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import img1 from '../assets/img1.jpg';
-import img2 from '../assets/img2.jpg';
-import img3 from '../assets/img3.jpg';
 import konsultacija from '../assets/konsultacija.png';
 import projekat from '../assets/projekat.png';
 import event from '../assets/event.png';
@@ -22,13 +19,13 @@ function AboutUs() {
           setHasAnimated(true);
           
           // Animate each counter
-          targetNumbers.forEach((target, index) => {
+          targetNumbers.forEach((_target, index) => {
             let current = 0;
-            const increment = target / 60; // 60 frames for smooth animation
+            const increment = targetNumbers[index] / 60; // 60 frames for smooth animation
             const timer = setInterval(() => {
               current += increment;
-              if (current >= target) {
-                current = target;
+              if (current >= targetNumbers[index]) {
+                current = targetNumbers[index];
                 clearInterval(timer);
               }
               setCounters(prev => {
@@ -92,9 +89,9 @@ function AboutUs() {
       <div className="max-w-7xl mx-auto py-12 md:py-20 px-4 relative z-10">
 
         {/* SECTION 1 */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-20 items-center mb-16 md:mb-24">
-          <div className="space-y-5 text-justify">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#294a70]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center mb-16 md:mb-24">
+          <div className="space-y-5">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#294a70] leading-tight">
               {t('aboutus.howItStarted')}
             </h2>
             <p className="text-base sm:text-lg text-gray-800 leading-relaxed">
@@ -106,30 +103,38 @@ function AboutUs() {
           </div>
           
           {/* Projekat image */}
-          <div>
+          <div className="flex items-center justify-center h-full">
             <img 
               src={projekat} 
               alt="Alumni FIT projekat" 
+<<<<<<< HEAD
               className="rounded-lg shadow-lg w-full h-64 object-cover hover:shadow-xl transition-shadow duration-300"
+=======
+              className="rounded-lg shadow-lg w-full max-w-md h-64 lg:h-80 object-cover hover:shadow-xl transition-shadow duration-300"
+>>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
               loading="lazy"
             />
           </div>
         </div>
 
         {/* SECTION 2 (REVERSED) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-20 items-center mb-16 md:mb-24 lg:[direction:rtl]">
-          {/* Image section */}
-          <div className="lg:[direction:ltr]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center mb-16 md:mb-24">
+          {/* Image goes RIGHT on desktop, TOP on mobile */}
+          <div className="flex items-center justify-center order-1 lg:order-2 h-full">
             <img 
               src={konsultacija} 
               alt="Konsultacije i mentorstvo" 
+<<<<<<< HEAD
               className="rounded-lg shadow-lg w-full h-64 object-cover hover:shadow-xl transition-shadow duration-300"
+=======
+              className="rounded-lg shadow-lg w-full max-w-md h-64 lg:h-80 object-cover hover:shadow-xl transition-shadow duration-300"
+>>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
               loading="lazy"
             />
           </div>
           
-          <div className="space-y-5 lg:[direction:ltr] text-justify">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#294a70]">
+          <div className="space-y-5 order-2 lg:order-1">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#294a70] leading-tight">
               {t('aboutus.ourMission')}
             </h2>
 
@@ -144,9 +149,9 @@ function AboutUs() {
         </div>
 
         {/* SECTION 3 */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-20 items-center mb-16 md:mb-24">
-          <div className="space-y-5 text-justify">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#294a70]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16 items-center mb-16 md:mb-24">
+          <div className="space-y-5">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#294a70] leading-tight">
               {t('aboutus.whatWeOffer')}
             </h2>
 
@@ -157,26 +162,30 @@ function AboutUs() {
             {/* Feature list */}
             <div className="space-y-4">
               <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                <div className="w-2 h-2 bg-[#ffab1f] rounded-full"></div>
+                <div className="w-2 h-2 bg-[#ffab1f] rounded-full flex-shrink-0"></div>
                 <span className="text-gray-700">{t('aboutus.feature1')}</span>
               </div>
               <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                <div className="w-2 h-2 bg-[#ffab1f] rounded-full"></div>
+                <div className="w-2 h-2 bg-[#ffab1f] rounded-full flex-shrink-0"></div>
                 <span className="text-gray-700">{t('aboutus.feature2')}</span>
               </div>
               <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                <div className="w-2 h-2 bg-[#ffab1f] rounded-full"></div>
+                <div className="w-2 h-2 bg-[#ffab1f] rounded-full flex-shrink-0"></div>
                 <span className="text-gray-700">{t('aboutus.feature3')}</span>
               </div>
             </div>
           </div>
           
           {/* Event photo */}
-          <div>
+          <div className="flex items-center justify-center h-full">
             <img 
               src={event} 
               alt="Alumni eventi i aktivnosti" 
+<<<<<<< HEAD
               className="rounded-lg shadow-lg w-full h-64 object-cover hover:shadow-xl transition-shadow duration-300"
+=======
+              className="rounded-lg shadow-lg w-full max-w-md h-64 lg:h-80 object-cover hover:shadow-xl transition-shadow duration-300"
+>>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
               loading="lazy"
             />
           </div>

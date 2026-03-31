@@ -1,18 +1,26 @@
-// utils/usernameGenerator.ts
-export function generateUsername(firstName: string, lastName: string, existingUsernames: string[]): string {
-  // Clean the names and create base username
-  const cleanFirstName = firstName.toLowerCase().replace(/[^a-z0-9]/g, '');
-  const cleanLastName = lastName.toLowerCase().replace(/[^a-z0-9]/g, '');
-  
-  let baseUsername = `${cleanFirstName}.${cleanLastName}`;
+export const generateUsername = (
+  ime: string,
+  prezime: string,
+  existingUsernames: string[]
+) => {
+
+  const removeDiacritics = (str: string) =>
+    str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z]/g, "");
+
+  const cleanIme = removeDiacritics(ime).toLowerCase();
+  const cleanPrezime = removeDiacritics(prezime).toLowerCase();
+
+  let baseUsername = `${cleanIme}.${cleanPrezime}`;
   let username = baseUsername;
   let counter = 1;
 
-  // Check if username exists and add numbers if needed
   while (existingUsernames.includes(username)) {
     username = `${baseUsername}${counter}`;
     counter++;
   }
 
   return username;
-}
+};

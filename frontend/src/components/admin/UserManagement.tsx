@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminService from '../../services/adminService';
 import { generateUsername } from '../utils/UsernameGenerator';
+import Papa from 'papaparse';
 
 // Extended User interface for the component (different from AdminService User)
 interface ExtendedUser {
@@ -162,112 +163,85 @@ export default function UserManagement() {
     }
   };
 
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   const handleBulkImport = async (e: React.FormEvent) => {
   e.preventDefault();
+
   try {
     setBulkImportLoading(true);
-    
-    console.log('Neobrađeni CSV podaci:', csvData);
-    
-    // Parse CSV data
-    const rows = csvData.split('\n').filter(row => row.trim());
-    console.log('Rezultati pretrage:', rows.length);
-    
-    if (rows.length < 2) {
-      alert('CSV fajl ne sadrži podatke. Provjerite ispravnost formata.');
+
+    const parsed = Papa.parse(csvData, {
+      header: true,
+      skipEmptyLines: true,
+    });
+
+    if (!parsed.data || parsed.data.length === 0) {
+      alert("CSV ne sadrži validne podatke.");
       return;
     }
 
-    // Parse headers and map to our field names
-    const headers = rows[0].split(',').map(header => 
-      header.trim().replace(/"/g, '').toLowerCase()
-    );
-    console.log('CSV zaglavlja:', headers);
+    const existingUsernames = users.map(u => u.username);
+    const usersToCreate: any[] = [];
 
-    // Get existing usernames for collision checking
-    const existingUsernames = users.map(user => user.username);
-    const usersToCreate = [];
-    
-    for (let i = 1; i < rows.length; i++) {
-      const row = rows[i].split(',').map(field => field.trim().replace(/"/g, ''));
-      console.log(`Obrada reda ${i}:`, row);
-      
-      if (row.length < 3) {
-        console.warn(`Preskačem red ${i} - nema dovoljno kolona`);
-        continue;
+    for (const row: any of parsed.data) {
+      const firstName = row.Ime || row.ime || "";
+      const lastName = row.Prezime || row.prezime || "";
+      const email = row.Email || row.email || "";
+
+      if (!firstName || !lastName || !email) continue;
+
+      const username = generateUsername(
+        firstName,
+        lastName,
+        [...existingUsernames, ...usersToCreate.map(u => u.username)]
+      );
+
+      if (!isValidEmail(email)) {
+        alert(`Email nije validan: ${email}`);
+        return;
       }
 
-      // Create user data object from CSV row
-      const userData: any = {};
-      headers.forEach((header, index) => {
-        userData[header] = row[index];
+      usersToCreate.push({
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        username,
+        password: "alumni123",
+        enrollment_year: new Date().getFullYear(),
+        role: "user",
+        occupation: ""
       });
-
-      console.log('Obrađeni podaci o korisnicima:', userData);
-
-      // Map CSV columns to our field names
-      const firstName = userData['ime'] || '';
-      const lastName = userData['prezime'] || '';
-      const email = userData['email'] || '';
-
-      // Validate required fields
-      if (firstName && lastName && email) {
-        const username = generateUsername(firstName, lastName, [
-          ...existingUsernames, 
-          ...usersToCreate.map(u => u.username)
-        ]);
-        
-        usersToCreate.push({
-          first_name: firstName,
-          last_name: lastName,
-          email: email,
-          username: username,
-          password: 'alumni123', // Default password
-          enrollment_year: new Date().getFullYear(), // Current year - FIXED: removed enrollmentYear variable
-          role: 'user',
-          occupation: '' // Default empty occupation
-        });
-        
-        console.log(`Dodat korisnik: ${firstName} ${lastName}`);
-      } else {
-        console.warn(`Preskačem red ${i} - nedostaju obavezna polja:`, { firstName, lastName, email });
-      }
     }
-
-    console.log('Novi korisnici:', usersToCreate);
 
     if (usersToCreate.length === 0) {
-      alert('Nisu pronađeni važeći korisnici. Provjerite format CSV fajla.\n\nObavezne kolone: Ime, Prezime, Email');
+      alert("Nema validnih korisnika za import.");
       return;
     }
 
-    // Create users in batch
-    let successCount = 0;
-    let errorCount = 0;
+    let success = 0;
+    let fail = 0;
 
     for (const userData of usersToCreate) {
       try {
         await AdminService.createUser(userData);
-        successCount++;
-      } catch (error) {
-        console.error(`Greška prilikom kreiranja korisnika ${userData.email}:`, error);
-        errorCount++;
+        success++;
+      } catch {
+        fail++;
       }
     }
 
     setShowBulkImportModal(false);
-    setCsvData('');
+    setCsvData("");
     loadUsers();
-    
-    if (errorCount > 0) {
-      alert(`Import završen sa ${successCount} uspješnih i ${errorCount} grešaka. Provjerite konzolu za detalje.`);
-    } else {
-      alert(`Uspješno importovano ${successCount} korisnika!`);
-    }
-    
+
+    alert(`Import završen.\nUspješno: ${success}\nGreške: ${fail}`);
+
   } catch (error: any) {
-    console.error('Greška pri masovnom importu:', error);
-    alert(`Greška tokom masovnog importa: ${error.message}`);
+    console.error(error);
+    alert("Greška tokom importa.");
   } finally {
     setBulkImportLoading(false);
   }

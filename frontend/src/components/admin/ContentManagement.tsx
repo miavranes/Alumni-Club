@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import EventList from "../../pages/EventList";
 
-
 interface Post {
   id: number;
   title: string;
@@ -24,7 +23,9 @@ interface Post {
 }
 
 export default function ContentManagement() {
-  const [activeTab, setActiveTab] = useState<"pending" | "approved" | "events">("pending");
+  const [activeTab, setActiveTab] = useState<"pending" | "approved" | "events">(
+    "pending"
+  );
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,6 +34,8 @@ export default function ContentManagement() {
   const [totalPosts, setTotalPosts] = useState(0);
 
   const token = localStorage.getItem("token");
+
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     if (activeTab === "pending") {
@@ -52,7 +55,7 @@ export default function ContentManagement() {
       setLoading(true);
       setError(null);
 
-      const res = await fetch("/api/posts/pending", {
+      const res = await fetch(`${API_BASE_URL}/api/posts/pending`, {
         headers: {
           "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -80,12 +83,15 @@ export default function ContentManagement() {
       setLoading(true);
       setError(null);
 
-      const res = await fetch(`/api/posts?page=${currentPage}&limit=10`, {
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-      });
+      const res = await fetch(
+        `${API_BASE_URL}/api/posts?page=${currentPage}&limit=10`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        }
+      );
 
       if (!res.ok) {
         const body = await res.json().catch(() => null);
@@ -94,7 +100,7 @@ export default function ContentManagement() {
       }
 
       const data = await res.json();
-      
+
       // Check if data has pagination structure
       if (data.posts && data.pagination) {
         setPosts(data.posts);
@@ -119,7 +125,7 @@ export default function ContentManagement() {
       return;
 
     try {
-      const res = await fetch(`/api/posts/${postId}/approve`, {
+      const res = await fetch(`${API_BASE_URL}/api/posts/${postId}/approve`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -145,7 +151,7 @@ export default function ContentManagement() {
       return;
 
     try {
-      const res = await fetch(`/api/posts/${postId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/posts/${postId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -236,7 +242,7 @@ export default function ContentManagement() {
                         Autor: {post.users.first_name} {post.users.last_name}
                       </p>
                     </div>
-                    
+
                     <div className="flex gap-2 ml-4">
                       <button
                         onClick={() => handleApprovePost(post.id)}
@@ -287,7 +293,7 @@ export default function ContentManagement() {
                         Autor: {post.users.first_name} {post.users.last_name}
                       </p>
                     </div>
-                    
+
                     <div className="flex gap-2 ml-4">
                       <button
                         onClick={() => handleDeletePost(post.id)}
@@ -306,12 +312,13 @@ export default function ContentManagement() {
           {activeTab === "approved" && !loading && !error && totalPages > 1 && (
             <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
               <div className="text-sm text-gray-600">
-                Prikazano {((currentPage - 1) * 10) + 1}-{Math.min(currentPage * 10, totalPosts)} od {totalPosts} objava
+                Prikazano {((currentPage - 1) * 10) + 1}-
+                {Math.min(currentPage * 10, totalPosts)} od {totalPosts} objava
               </div>
-              
+
               <div className="flex gap-2">
                 <button
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
                   className={`px-3 py-1 rounded-lg text-sm ${
                     currentPage === 1
@@ -321,13 +328,15 @@ export default function ContentManagement() {
                 >
                   ← Prethodna
                 </button>
-                
+
                 <span className="px-3 py-1 text-sm text-gray-600">
                   Strana {currentPage} od {totalPages}
                 </span>
-                
+
                 <button
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
                   disabled={currentPage === totalPages}
                   className={`px-3 py-1 rounded-lg text-sm ${
                     currentPage === totalPages

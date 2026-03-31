@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useLanguage } from "../../context/LanguageContext";
 import { Menu, X, Globe, ChevronDown } from "lucide-react";
+import akfitLogo from "../../assets/akfit.png";
+
 
 function Header() {
   const { user, logout } = useAuth();
@@ -40,7 +42,7 @@ function Header() {
           <div className="flex-shrink-0">
             <Link to="/Home">
               <img
-                src="/src/assets/akfit.png"
+                src={akfitLogo}
                 alt="Logo"
                 className="h-12 sm:h-14 lg:h-16 w-auto"
               />

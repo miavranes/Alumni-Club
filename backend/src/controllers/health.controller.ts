@@ -8,9 +8,13 @@ export const healthCheck = async (req: Request, res: Response) => {
         // Check database connection
         await prisma.$connect();
         res.status(200).json({ status: 'UP' });
-    } catch (error) {
-        res.status(500).json({ status: 'DOWN', error: error.message });
-    } finally {
+    } catch (error: unknown) {
+    const message =
+        error instanceof Error ? error.message : 'Unknown error';
+
+    res.status(500).json({ status: 'DOWN', error: message });
+    }
+    finally {
         await prisma.$disconnect();
     }
 };

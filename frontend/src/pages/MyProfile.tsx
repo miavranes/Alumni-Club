@@ -31,6 +31,8 @@ type ProfileData = {
 };
 
 export default function MyProfile() {
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
+
   const [profileData, setProfileData] = useState<ProfileData>({
     ime: "",
     prezime: "",
@@ -90,7 +92,7 @@ export default function MyProfile() {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const resp = await fetch("http://localhost:4000/api/users/me", {
+        const resp = await fetch(`${API_BASE_URL}/api/users/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -129,7 +131,7 @@ export default function MyProfile() {
 
         if (data.profile_picture) {
           setProfilnaSlika(
-            `http://localhost:4000${data.profile_picture}?t=${Date.now()}`
+            `${API_BASE_URL}${data.profile_picture}?t=${Date.now()}`
           );
         }
       } catch (err) {
@@ -138,7 +140,7 @@ export default function MyProfile() {
     }
 
     loadProfile();
-  }, []);
+  }, [API_BASE_URL]);
 
   const openEditModal = () => {
     console.log("Otvaranje edit modal-a");
@@ -245,10 +247,13 @@ export default function MyProfile() {
       };
 
       console.log("Šaljem podatke na backend:", payload);
-      console.log("Godina diplomiranja koja se šalje:", editFormData.godinaZavrsetka);
+      console.log(
+        "Godina diplomiranja koja se šalje:",
+        editFormData.godinaZavrsetka
+      );
 
       // Update main profile info
-      const response = await fetch("http://localhost:4000/api/users/me", {
+      const response = await fetch(`${API_BASE_URL}/api/users/me`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -260,7 +265,7 @@ export default function MyProfile() {
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Backend greška:", errorData);
-        
+
         // Prikaži specifičnu grešku korisniku
         if (errorData.message) {
           alert(`Greška: ${errorData.message}`);
@@ -280,7 +285,7 @@ export default function MyProfile() {
         formData.append("avatar", editFormData.profilnaSlikaFile);
 
         const avatarResponse = await fetch(
-          "http://localhost:4000/api/users/me/avatar",
+          `${API_BASE_URL}/api/users/me/avatar`,
           {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },
@@ -293,7 +298,7 @@ export default function MyProfile() {
           // Ažuriraj sliku u state-u sa cache-busting parametrom
           if (avatarData.profile_picture) {
             setProfilnaSlika(
-              `http://localhost:4000${avatarData.profile_picture}?t=${Date.now()}`
+              `${API_BASE_URL}${avatarData.profile_picture}?t=${Date.now()}`
             );
           }
         }
@@ -304,7 +309,7 @@ export default function MyProfile() {
         const cvData = new FormData();
         cvData.append("cv", editFormData.cvFile);
 
-        await fetch("http://localhost:4000/api/users/me/cv", {
+        await fetch(`${API_BASE_URL}/api/users/me/cv`, {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
           body: cvData,
@@ -416,9 +421,7 @@ export default function MyProfile() {
                 )}
               </div>
               <p className="text-xs text-gray-600">
-                {profileData.javniProfil
-                  ? "Profil je javan"
-                  : "Profil je privatan"}
+                {profileData.javniProfil ? "Profil je javan" : "Profil je privatan"}
               </p>
             </div>
           </div>
@@ -475,11 +478,7 @@ export default function MyProfile() {
               {/* Profile Information */}
               <div className="p-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <ProfileItem
-                    icon={<Mail />}
-                    label="Email"
-                    value={profileData.email}
-                  />
+                  <ProfileItem icon={<Mail />} label="Email" value={profileData.email} />
                   <ProfileItem
                     icon={<BookOpen />}
                     label="Nivo studija"
@@ -521,9 +520,7 @@ export default function MyProfile() {
                         </span>
                       </div>
                       <p className="text-sm text-gray-600">
-                        {profileData.javniProfil
-                          ? "Javan profil"
-                          : "Privatan profil"}
+                        {profileData.javniProfil ? "Javan profil" : "Privatan profil"}
                       </p>
                     </div>
 
@@ -546,9 +543,7 @@ export default function MyProfile() {
                           Status
                         </span>
                       </div>
-                      <p className="text-sm text-green-600 font-medium">
-                        Aktivan
-                      </p>
+                      <p className="text-sm text-green-600 font-medium">Aktivan</p>
                     </div>
                   </div>
                 </div>
@@ -629,15 +624,21 @@ export default function MyProfile() {
                         onChange={handleEditChange}
                       />
                     </div>
-                    
-                    <EmailField 
-                      icon={<Mail />} 
-                      label="Email" 
-                      name="email" 
-                      value={editFormData.email} 
-                      onChange={handleEditChange} 
+
+                    <EmailField
+                      icon={<Mail />}
+                      label="Email"
+                      name="email"
+                      value={editFormData.email}
+                      onChange={handleEditChange}
                     />
-                    <FormField icon={<Briefcase />} label="Pozicija" name="pozicija" value={editFormData.pozicija} onChange={handleEditChange} />
+                    <FormField
+                      icon={<Briefcase />}
+                      label="Pozicija"
+                      name="pozicija"
+                      value={editFormData.pozicija}
+                      onChange={handleEditChange}
+                    />
 
                     {/* EMAIL: READ-ONLY */}
                     <FormField
@@ -872,9 +873,7 @@ function FormField({
           }`}
         />
         {readOnly && name === "email" && (
-          <p className="text-xs text-gray-500 mt-1">
-            Email nije moguće mijenjati.
-          </p>
+          <p className="text-xs text-gray-500 mt-1">Email nije moguće mijenjati.</p>
         )}
       </div>
     </div>
@@ -894,7 +893,7 @@ function EmailField({ icon, label, name, value, onChange }: any) {
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     onChange(e);
-    
+
     setShowValidation(newValue.length > 0);
     setIsValid(validateEmail(newValue));
   };
@@ -903,19 +902,23 @@ function EmailField({ icon, label, name, value, onChange }: any) {
     <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
       <div className="text-[#ffab1f]">{icon}</div>
       <div className="flex-1">
-        <label className="text-sm text-gray-600 font-medium block mb-2">{label}</label>
+        <label className="text-sm text-gray-600 font-medium block mb-2">
+          {label}
+        </label>
         <input
           type="email"
           name={name}
           value={value}
           onChange={handleEmailChange}
           className={`w-full text-base font-semibold bg-transparent border-none focus:outline-none ${
-            showValidation && !isValid ? 'text-red-600' : 'text-[#294a70]'
+            showValidation && !isValid ? "text-red-600" : "text-[#294a70]"
           }`}
           placeholder="ime@example.com"
         />
         {showValidation && !isValid && (
-          <p className="text-xs text-red-500 mt-1">Molimo unesite valjan email format</p>
+          <p className="text-xs text-red-500 mt-1">
+            Molimo unesite valjan email format
+          </p>
         )}
       </div>
     </div>

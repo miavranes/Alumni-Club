@@ -2,6 +2,18 @@
 
 A full-stack alumni management platform built with React + TypeScript frontend and Node.js + Express + Prisma backend.
 
+## 🌐 Deployment Status
+
+As of 2.10.2026, this project is fully deployed and operational exclusively on Render.
+Local execution is no longer supported due to environment coupling, hosted database constraints, and production-only configuration.
+
+🔗 Live Application:
+https://alumni-club.onrender.com
+
+All services, including backend API, database, email workflows, and authentication, are bound to the Render hosting environment.
+
+Automated email workflows are presently inactive due to the expiration of the SendGrid free-tier service. The implementation remains intact and can be reactivated upon renewal of email service credentials.
+
 ## 🚀 Tech Stack
 
 ### Frontend
@@ -256,4 +268,11 @@ npx ts-node src/scripts/create-admin-interactive.ts
     The project is feature-complete, stable, and ready for handover.
     All core systems are implemented, documented, and structured for continued development.
 
+## 📬 Project Handover & Administration
 
+For matters concerning project handover, maintenance, deployment access, or administrative oversight, please contact the current project administrator:
+
+Administrator: AdrianAdrovic-sudo
+Email: atko.adrovic@gmailc.com
+
+All credentials, hosting configurations, and operational knowledge are held by the administrator. Any future development, service reactivation, or ownership transfer should be coordinated directly through this contact.

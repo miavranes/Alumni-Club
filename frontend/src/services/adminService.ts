@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-const API_BASE_URL = "http://localhost:4000/api";
+const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
 
 interface UserFilters {
   role?: string;
@@ -128,17 +128,24 @@ class AdminService {
   }
 
   async deactivateUser(userId: number): Promise<User> {
-    const response = await this.api.patch<User>(`/admin/users/${userId}/deactivate`);
+    const response = await this.api.patch<User>(
+      `/admin/users/${userId}/deactivate`
+    );
     return response.data;
   }
 
   async activateUser(userId: number): Promise<User> {
-    const response = await this.api.patch<User>(`/admin/users/${userId}/activate`);
+    const response = await this.api.patch<User>(
+      `/admin/users/${userId}/activate`
+    );
     return response.data;
   }
 
   // Content Management
-  async getPosts(page: number = 1, limit: number = 10): Promise<PaginatedResponse<any>> {
+  async getPosts(
+    page: number = 1,
+    limit: number = 10
+  ): Promise<PaginatedResponse<any>> {
     const response = await this.api.get<PaginatedResponse<any>>("/admin/posts", {
       params: { page, limit },
     });
@@ -146,11 +153,16 @@ class AdminService {
   }
 
   async deletePost(postId: number): Promise<{ message: string }> {
-    const response = await this.api.delete<{ message: string }>(`/admin/posts/${postId}`);
+    const response = await this.api.delete<{ message: string }>(
+      `/admin/posts/${postId}`
+    );
     return response.data;
   }
 
-  async getEvents(page: number = 1, limit: number = 10): Promise<PaginatedResponse<any>> {
+  async getEvents(
+    page: number = 1,
+    limit: number = 10
+  ): Promise<PaginatedResponse<any>> {
     const response = await this.api.get<PaginatedResponse<any>>("/admin/events", {
       params: { page, limit },
     });
@@ -175,7 +187,9 @@ class AdminService {
 
   /** Mark inquiry as read (admin only) */
   async markInquiryRead(id: number): Promise<ContactInquiry> {
-    const response = await this.api.patch<InquiryResponse>(`/admin/inquiries/${id}/read`);
+    const response = await this.api.patch<InquiryResponse>(
+      `/admin/inquiries/${id}/read`
+    );
     return response.data.inquiry;
   }
 

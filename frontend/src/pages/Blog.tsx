@@ -37,14 +37,14 @@ type Props = {
 export type BlogProps = React.ComponentPropsWithoutRef<"section"> & Partial<Props>;
 
 const ITEMS_PER_PAGE = 4;
-const BACKEND_BASE_URL = "http://localhost:4000";
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 function resolvePostImageSrc(imageUrl: string | null | undefined) {
   if (!imageUrl) {
     return "https://d22po4pjz3o32e.cloudfront.net/placeholder-image-landscape.svg";
   }
   // If it is a local upload path, prefix backend
-  if (imageUrl.startsWith("/uploads/")) return `${BACKEND_BASE_URL}${imageUrl}`;
+  if (imageUrl.startsWith("/uploads/")) return `${API_BASE_URL}${imageUrl}`;
   // Otherwise assume it is already a full URL
   return imageUrl;
 }
@@ -150,7 +150,7 @@ export const Blog = (props: BlogProps) => {
       fd.append("content", formData.content);
       fd.append("image", formData.imageFile);
 
-      const res = await fetch("http://localhost:4000/api/posts", {
+      const res = await fetch(`${API_BASE_URL}/api/posts`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -195,7 +195,7 @@ export const Blog = (props: BlogProps) => {
   const fetchPosts = async () => {
     try {
       // Dohvati sve blogove odjednom (bez paginacije)
-      const res = await fetch("http://localhost:4000/api/posts?limit=100");
+      const res = await fetch(`${API_BASE_URL}/api/posts?limit=100`);
       if (!res.ok) {
         console.error("Neuspješno dohvatanje objava:", res.status);
         setLoading(false);
@@ -219,7 +219,7 @@ export const Blog = (props: BlogProps) => {
         content: post.content || "",
         avatar: {
           src: post.users?.profile_picture
-            ? `http://localhost:4000${post.users.profile_picture}?t=${Date.now()}`
+            ? `${API_BASE_URL}${post.users.profile_picture}?t=${Date.now()}`
             : "https://d22po4pjz3o32e.cloudfront.net/placeholder-image.svg",
           alt: post.users
             ? `${post.users.first_name} ${post.users.last_name}`
@@ -324,12 +324,25 @@ export const Blog = (props: BlogProps) => {
         <div className="container">
           <div className="mb-16 md:mb-20 lg:mb-24">
             <div className="mx-auto w-full max-w-4xl text-center">
+<<<<<<< HEAD
               <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-5 md:mb-6 py-3
                              bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent
                              drop-shadow-2xl">
                 {t("blog.heading")}
               </h2>
               <p className="text-lg md:text-xl text-gray-200 leading-relaxed font-light">{t("blog.description")}</p>
+=======
+              <h2
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-5 md:mb-6 py-3
+                             bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent
+                             drop-shadow-2xl"
+              >
+                {t("blog.heading")}
+              </h2>
+              <p className="text-lg md:text-xl text-gray-200 leading-relaxed font-light">
+                {t("blog.description")}
+              </p>
+>>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
             </div>
           </div>
 
@@ -561,7 +574,9 @@ export const Blog = (props: BlogProps) => {
                   <div className="prose prose-lg max-w-none">
                     <div
                       className="text-gray-700 leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: selectedPost.content || selectedPost.description }}
+                      dangerouslySetInnerHTML={{
+                        __html: selectedPost.content || selectedPost.description,
+                      }}
                     />
                   </div>
                 </div>

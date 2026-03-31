@@ -17,7 +17,8 @@ interface Message {
 
 type TabType = "inbox" | "sent";
 
-const API_BASE = "http://localhost:4000/api/messages";
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE = `${API_BASE_URL}/api/messages`;
 
 export default function Inbox() {
   const { user, token } = useAuth();
@@ -223,19 +224,16 @@ export default function Inbox() {
               )}
 
               {currentlyShown.map((msg) => {
-                const isUnread =
-                  activeTab === "inbox" && !msg.read_at;
+                const isUnread = activeTab === "inbox" && !msg.read_at;
 
                 const personName =
                   activeTab === "inbox"
                     ? `${msg.sender_first_name ?? ""} ${
                         msg.sender_last_name ?? ""
-                      }`.trim() ||
-                      `Korisnik #${msg.sender_id}`
+                      }`.trim() || `Korisnik #${msg.sender_id}`
                     : `${msg.receiver_first_name ?? ""} ${
                         msg.receiver_last_name ?? ""
-                      }`.trim() ||
-                      `Korisnik #${msg.receiver_id}`;
+                      }`.trim() || `Korisnik #${msg.receiver_id}`;
 
                 return (
                   <div
@@ -261,9 +259,7 @@ export default function Inbox() {
                       )}
                     </div>
 
-                    <div className="text-xs text-gray-500 mt-1">
-                      {personName}
-                    </div>
+                    <div className="text-xs text-gray-500 mt-1">{personName}</div>
 
                     <div className="text-xs text-gray-400 mt-1">
                       {formatDate(msg.sent_date)}
@@ -294,14 +290,12 @@ export default function Inbox() {
                       const senderName =
                         `${selectedMessage.sender_first_name ?? ""} ${
                           selectedMessage.sender_last_name ?? ""
-                        }`.trim() ||
-                        `Korisnik #${selectedMessage.sender_id}`;
+                        }`.trim() || `Korisnik #${selectedMessage.sender_id}`;
 
                       const receiverName =
                         `${selectedMessage.receiver_first_name ?? ""} ${
                           selectedMessage.receiver_last_name ?? ""
-                        }`.trim() ||
-                        `Korisnik #${selectedMessage.receiver_id}`;
+                        }`.trim() || `Korisnik #${selectedMessage.receiver_id}`;
 
                       return activeTab === "inbox" ? (
                         <span>

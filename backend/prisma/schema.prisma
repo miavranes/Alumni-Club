@@ -153,6 +153,10 @@ model users {
   posts                                                posts[]
   private_messages_private_messages_receiver_idTousers private_messages[]   @relation("private_messages_receiver_idTousers")
   private_messages_private_messages_sender_idTousers   private_messages[]   @relation("private_messages_sender_idTousers")
+<<<<<<< HEAD
+=======
+  outbox_emails                                        outbox_emails[]      @relation("UserOutboxEmails")
+>>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f
   theses                                               theses[]
 
   @@index([enrollment_year], map: "idx_users_graduation_year")
@@ -190,6 +194,7 @@ model contact_inquiries {
   read_at    DateTime? @db.Timestamp(6)
   deleted    Boolean   @default(false)
 
+<<<<<<< HEAD
   @@index([created_at(sort: Desc)], map: "idx_contact_created_at")
 }
 
@@ -226,3 +231,51 @@ enum RSVPStatus {
   Declined
   Waitlist
 }
+=======
+  @@index([created_at(sort: Desc)], map: "idx_contact_inquiries_created_at")
+  @@index([deleted], map: "idx_contact_inquiries_deleted")
+}
+
+model theses {
+  id                Int      @id @default(autoincrement())
+  first_name        String
+  last_name         String
+  title             String   @db.VarChar(255)
+  subtitle          String?  @db.VarChar(255)
+  title_language    String   @db.VarChar(50)
+  additional_title  String?  @db.VarChar(255)
+  additional_subtitle String? @db.VarChar(255)
+  additional_title_language String? @db.VarChar(50)
+  type              String   @db.VarChar(100)
+  file_url          String   @db.VarChar(255)
+  zip_file           String?  @db.VarChar(255)
+  year              Int
+  
+  // Podaci za statistiku
+  mentor            String?  @db.VarChar(255)
+  committee_members String?  @db.Text // JSON array ili comma-separated
+  grade             String?  @db.VarChar(10) // A, B, C, D, E, F
+  keywords          String?  @db.Text // JSON array ili comma-separated
+  language          String?  @db.VarChar(50) // Jezik rada (npr. "English", "Serbian")
+  
+  // Abstract (sažetak)
+  abstract          String?  @db.Text
+  
+  // Termin odbrane rada
+  defense_date      DateTime? @db.Timestamp(6)
+  
+  // Brojač preuzimanja
+  download_count    Int       @default(0)
+  
+  created_at        DateTime @default(now())
+  user_id           Int?
+  user              users?   @relation(fields: [user_id], references: [id])
+  
+  @@index([mentor])
+  @@index([grade])
+  @@index([language])
+}
+
+
+
+>>>>>>> 7085e605405945ce4b0bd5fab9c54c1107a7cf8f

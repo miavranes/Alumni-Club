@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE = "http://localhost:4000/api/auth";
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE = `${API_BASE_URL}/api/auth`;
 
 export default function ResetPassword() {
   const [step, setStep] = useState<1 | 2>(1);
@@ -125,7 +126,10 @@ export default function ResetPassword() {
 
         {step === 1 && (
           <form onSubmit={handleCheck} className="w-full flex flex-col">
-            <label htmlFor="username" className="block mt-4 mb-2 font-semibold text-left text-base text-[#294a70]">
+            <label
+              htmlFor="username"
+              className="block mt-4 mb-2 font-semibold text-left text-base text-[#294a70]"
+            >
               Korisničko ime:
             </label>
             <input
@@ -138,7 +142,10 @@ export default function ResetPassword() {
               className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-base font-inherit transition-colors duration-300 box-border text-gray-800 bg-white h-11 placeholder:text-gray-400 placeholder:text-base focus:outline-none focus:border-[#ffab1f]"
             />
 
-            <label htmlFor="email" className="block mt-4 mb-2 font-semibold text-left text-base text-[#294a70]">
+            <label
+              htmlFor="email"
+              className="block mt-4 mb-2 font-semibold text-left text-base text-[#294a70]"
+            >
               Email:
             </label>
             <input
@@ -151,8 +158,8 @@ export default function ResetPassword() {
               className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-base font-inherit transition-colors duration-300 box-border text-gray-800 bg-white h-11 placeholder:text-gray-400 placeholder:text-base focus:outline-none focus:border-[#ffab1f]"
             />
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className="mt-6 px-8 py-3.5 bg-gradient-to-br from-[#294a70] to-[#324D6B] text-white border-none rounded-lg cursor-pointer text-base font-semibold w-full transition-all duration-300 hover:bg-gradient-to-br hover:from-[#ffab1f] hover:to-[#ff9500] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#ffab1f]/30"
             >
@@ -163,7 +170,10 @@ export default function ResetPassword() {
 
         {step === 2 && (
           <form onSubmit={handleConfirm} className="w-full flex flex-col">
-            <label htmlFor="code" className="block mt-4 mb-2 font-semibold text-left text-base text-[#294a70]">
+            <label
+              htmlFor="code"
+              className="block mt-4 mb-2 font-semibold text-left text-base text-[#294a70]"
+            >
               Kod sa emaila:
             </label>
             <input
@@ -176,7 +186,10 @@ export default function ResetPassword() {
               className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-base font-inherit transition-colors duration-300 box-border text-gray-800 bg-white h-11 placeholder:text-gray-400 placeholder:text-base focus:outline-none focus:border-[#ffab1f]"
             />
 
-            <label htmlFor="newPassword" className="block mt-4 mb-2 font-semibold text-left text-base text-[#294a70]">
+            <label
+              htmlFor="newPassword"
+              className="block mt-4 mb-2 font-semibold text-left text-base text-[#294a70]"
+            >
               Nova šifra:
             </label>
             <input
@@ -189,7 +202,10 @@ export default function ResetPassword() {
               className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-base font-inherit transition-colors duration-300 box-border text-gray-800 bg-white h-11 placeholder:text-gray-400 placeholder:text-base focus:outline-none focus:border-[#ffab1f]"
             />
 
-            <label htmlFor="confirmPassword" className="block mt-4 mb-2 font-semibold text-left text-base text-[#294a70]">
+            <label
+              htmlFor="confirmPassword"
+              className="block mt-4 mb-2 font-semibold text-left text-base text-[#294a70]"
+            >
               Ponovite novu šifru:
             </label>
             <input
@@ -202,8 +218,8 @@ export default function ResetPassword() {
               className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-base font-inherit transition-colors duration-300 box-border text-gray-800 bg-white h-11 placeholder:text-gray-400 placeholder:text-base focus:outline-none focus:border-[#ffab1f]"
             />
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className="mt-6 px-8 py-3.5 bg-gradient-to-br from-[#294a70] to-[#324D6B] text-white border-none rounded-lg cursor-pointer text-base font-semibold w-full transition-all duration-300 hover:bg-gradient-to-br hover:from-[#ffab1f] hover:to-[#ff9500] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#ffab1f]/30"
             >
