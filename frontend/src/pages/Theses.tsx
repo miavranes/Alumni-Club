@@ -257,10 +257,10 @@ export default function DiplomskiRadovi() {
           <div className="max-w-6xl mx-auto px-4 md:px-8">
             <div className="bg-white rounded-xl shadow-lg p-2 flex gap-2 border border-gray-200">
               <button onClick={() => setActiveTab("search")} className={`flex-1 px-6 py-3 text-sm md:text-base font-semibold rounded-lg transition-all duration-300 ${activeTab === "search" ? "bg-gradient-to-r from-[#294a70] to-[#324D6B] text-white shadow-md transform scale-105" : "bg-transparent text-gray-600 hover:bg-gray-100"}`}>
-                🔍 Pretraga
+                Pretraga
               </button>
               <button onClick={() => setActiveTab("statistics")} className={`flex-1 px-6 py-3 text-sm md:text-base font-semibold rounded-lg transition-all duration-300 ${activeTab === "statistics" ? "bg-gradient-to-r from-[#294a70] to-[#324D6B] text-white shadow-md transform scale-105" : "bg-transparent text-gray-600 hover:bg-gray-100"}`}>
-                📊 Statistika
+                Statistika
               </button>
             </div>
           </div>
@@ -297,12 +297,12 @@ export default function DiplomskiRadovi() {
                   </div>
                   {user && (
                     <button onClick={() => setShowAddThesisModal(true)} className="flex items-center gap-2 px-5 py-3 bg-[#294a70] text-white rounded-lg hover:bg-[#1f3a5a] transition-all shadow-md hover:shadow-lg whitespace-nowrap font-semibold">
-                      ➕ Dodaj rad
+                      Dodaj rad
                     </button>
                   )}
                   {isAdmin && (
                     <button onClick={() => setShowCsvModal(true)} className="flex items-center gap-2 px-5 py-3 bg-[#50C878] text-white rounded-lg hover:bg-[#3da860] transition-all shadow-md hover:shadow-lg whitespace-nowrap font-semibold">
-                      📄 Upload CSV
+                      Upload CSV
                     </button>
                   )}
                 </div>
@@ -320,7 +320,7 @@ export default function DiplomskiRadovi() {
             <div className="w-full max-w-6xl">
               <div className="mb-6">
                 <p className="text-sm sm:text-base text-gray-700 bg-blue-50 border-l-4 border-[#294a70] rounded-r-lg p-4 shadow-sm">
-                  💡 <strong>Savjet:</strong> Kliknite na "Abstract" da pročitate sažetak rada.
+                  <strong>Savjet:</strong> Kliknite na "Abstract" da pročitate sažetak rada.
                 </p>
               </div>
               <div className="flex gap-6">
@@ -385,13 +385,13 @@ export default function DiplomskiRadovi() {
                 <div className="flex-1">
                   {!isSearching ? (
                     <div className="bg-white rounded-lg shadow-md p-12 text-center">
-                      <div className="text-6xl mb-4">🔍</div>
+                      <div className="text-6xl mb-4"></div>
                       <h3 className="text-2xl font-bold text-[#294a70] mb-2">Pretražite diplomske radove</h3>
                       <p className="text-gray-600">Koristite search ili filtere sa leve strane da pronađete radove.</p>
                     </div>
                   ) : currentItems.length === 0 ? (
                     <div className="bg-white rounded-lg shadow-md p-12 text-center">
-                      <div className="text-6xl mb-4">📭</div>
+                      <div className="text-6xl mb-4"></div>
                       <h3 className="text-2xl font-bold text-[#294a70] mb-2">Nema rezultata</h3>
                       <p className="text-gray-600">Pokušajte sa drugačijim kriterijumima pretrage.</p>
                     </div>
@@ -456,13 +456,13 @@ export default function DiplomskiRadovi() {
                                           await downloadFile(getFileUrl(p.fileUrl), `${safeTitle}.pdf`);
                                         }
                                       }} className="inline-flex items-center gap-2 px-4 py-2 bg-[#294a70] text-white rounded-lg hover:bg-[#1f3a5a] transition-all shadow-md hover:shadow-lg font-semibold text-sm cursor-pointer">
-                                        📄 Download full text (pdf)
+                                        Download full text (pdf)
                                         {p.download_count > 0 && <span className="ml-2 px-2 py-0.5 bg-white text-[#294a70] rounded-full text-xs font-bold">{p.download_count}</span>}
                                       </button>
                                     )}
                                     {p.zipUrl && (
                                       <button onClick={() => { const newWindow = window.open(getFileUrl(p.zipUrl), "_blank"); if (!newWindow) alert("Molimo omogucite pop-up prozore za preuzimanje ZIP-a."); }} className="inline-flex items-center gap-2 px-4 py-2 bg-[#2f6a6a] text-white rounded-lg hover:bg-[#255555] transition-all shadow-md hover:shadow-lg font-semibold text-sm cursor-pointer">
-                                        📁 Preuzmi ZIP
+                                        Preuzmi ZIP
                                       </button>
                                     )}
                                   </div>
@@ -476,7 +476,7 @@ export default function DiplomskiRadovi() {
                                         </button>
                                       )}
                                       <button onClick={() => handleDeleteThesis(p.id)} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all shadow-md font-semibold text-sm">
-                                        🗑 Obrisi
+                                        Obrisi
                                       </button>
                                     </div>
                                   </div>
@@ -522,7 +522,7 @@ export default function DiplomskiRadovi() {
       {activeTab === "statistics" && (
         <div className="w-full flex-1 px-4 md:px-8 py-8 bg-gray-50">
           <div className="w-full max-w-7xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#294a70] mb-8">📊 Statistika diplomskih radova</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#294a70] mb-8">Statistika diplomskih radova</h2>
             {loading ? (
               <div className="flex items-center justify-center py-20">
                 <div className="text-center">
@@ -532,7 +532,7 @@ export default function DiplomskiRadovi() {
               </div>
             ) : podaci.length === 0 ? (
               <div className="bg-white rounded-xl shadow-lg p-12 text-center">
-                <span className="text-6xl mb-4 block">📚</span>
+                <span className="text-6xl mb-4 block"></span>
                 <h3 className="text-2xl font-bold text-gray-700 mb-2">Nema podataka</h3>
                 <p className="text-gray-500">Trenutno nema diplomskih radova u bazi.</p>
               </div>
@@ -540,25 +540,25 @@ export default function DiplomskiRadovi() {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
                   <div className="bg-white border-2 border-[#294a70] p-6 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-                    <div className="flex items-center justify-between mb-3"><h3 className="text-xs font-bold uppercase tracking-wide text-gray-600">Ukupno radova</h3><span className="text-3xl">📚</span></div>
+                    <div className="flex items-center justify-between mb-3"><h3 className="text-xs font-bold uppercase tracking-wide text-gray-600">Ukupno radova</h3><span className="text-3xl"></span></div>
                     <p className="text-5xl font-bold text-[#294a70]">{podaci.length}</p>
                   </div>
                   <div className="bg-white border-2 border-blue-400 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-                    <div className="flex items-center justify-between mb-3"><h3 className="text-xs font-bold uppercase tracking-wide text-gray-600">Osnovne studije</h3><span className="text-3xl">🎓</span></div>
+                    <div className="flex items-center justify-between mb-3"><h3 className="text-xs font-bold uppercase tracking-wide text-gray-600">Osnovne studije</h3><span className="text-3xl"></span></div>
                     <p className="text-5xl font-bold text-blue-600">{podaci.filter(p => p.type === "bachelors").length}</p>
                   </div>
                   <div className="bg-white border-2 border-purple-400 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-                    <div className="flex items-center justify-between mb-3"><h3 className="text-xs font-bold uppercase tracking-wide text-gray-600">Specijalističke</h3><span className="text-3xl">⭐</span></div>
+                    <div className="flex items-center justify-between mb-3"><h3 className="text-xs font-bold uppercase tracking-wide text-gray-600">Specijalističke</h3><span className="text-3xl"></span></div>
                     <p className="text-5xl font-bold text-purple-600">{podaci.filter(p => p.type === "specialist").length}</p>
                   </div>
                   <div className="bg-white border-2 border-green-400 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-                    <div className="flex items-center justify-between mb-3"><h3 className="text-xs font-bold uppercase tracking-wide text-gray-600">Master studije</h3><span className="text-3xl">🎯</span></div>
+                    <div className="flex items-center justify-between mb-3"><h3 className="text-xs font-bold uppercase tracking-wide text-gray-600">Master studije</h3><span className="text-3xl"></span></div>
                     <p className="text-5xl font-bold text-green-600">{podaci.filter(p => p.type === "masters").length}</p>
                   </div>
                 </div>
 
                 <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-8">
-                  <h3 className="text-2xl font-bold text-[#294a70] mb-6 flex items-center gap-2"><span>📈</span> Grafički prikaz po godinama</h3>
+                  <h3 className="text-2xl font-bold text-[#294a70] mb-6 flex items-center gap-2"><span></span> Grafički prikaz po godinama</h3>
                   {years.length === 0 ? (
                     <div className="text-center py-12 text-gray-500"><p>Nema podataka za prikaz grafikona</p></div>
                   ) : (
@@ -599,7 +599,7 @@ export default function DiplomskiRadovi() {
                 </div>
 
                 <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 mt-8">
-                  <h3 className="text-2xl font-bold text-[#294a70] mb-6 flex items-center gap-2"><span>📋</span> Detaljna tabela statistike</h3>
+                  <h3 className="text-2xl font-bold text-[#294a70] mb-6 flex items-center gap-2"><span></span> Detaljna tabela statistike</h3>
                   <div className="overflow-x-auto">
                     <table className="w-full border-collapse">
                       <thead>
@@ -638,7 +638,7 @@ export default function DiplomskiRadovi() {
 
                 {mentorStats.length > 0 && (
                   <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 mt-8">
-                    <h3 className="text-2xl font-bold text-[#294a70] mb-6 flex items-center gap-2"><span>👨‍🏫</span> Statistika mentora <span className="text-sm font-normal text-gray-500 ml-2">({mentorStats.length} mentora)</span></h3>
+                    <h3 className="text-2xl font-bold text-[#294a70] mb-6 flex items-center gap-2"><span></span> Statistika mentora <span className="text-sm font-normal text-gray-500 ml-2">({mentorStats.length} mentora)</span></h3>
                     <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
                       {mentorStats.map(([mentor, count], index) => {
                         const percentage = (count / mentorStats[0][1]) * 60;
@@ -658,7 +658,7 @@ export default function DiplomskiRadovi() {
 
                 {committeeStats.length > 0 && (
                   <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 mt-8">
-                    <h3 className="text-2xl font-bold text-[#294a70] mb-6 flex items-center gap-2"><span>👥</span> Statistika članova komisija <span className="text-sm font-normal text-gray-500 ml-2">({committeeStats.length} članova)</span></h3>
+                    <h3 className="text-2xl font-bold text-[#294a70] mb-6 flex items-center gap-2"><span></span> Statistika članova komisija <span className="text-sm font-normal text-gray-500 ml-2">({committeeStats.length} članova)</span></h3>
                     <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
                       {committeeStats.map(([member, count], index) => {
                         const percentage = (count / committeeStats[0][1]) * 60;
@@ -679,7 +679,7 @@ export default function DiplomskiRadovi() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
                   {gradeStats.length > 0 && (
                     <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-                      <h3 className="text-2xl font-bold text-[#294a70] mb-6 flex items-center gap-2"><span>📊</span> Statistika ocjena</h3>
+                      <h3 className="text-2xl font-bold text-[#294a70] mb-6 flex items-center gap-2"><span></span> Statistika ocjena</h3>
                       <div className="space-y-4">
                         {gradeStats.map(({ grade, count }) => {
                           const totalGrades = gradeStats.reduce((sum, g) => sum + g.count, 0);
@@ -699,7 +699,7 @@ export default function DiplomskiRadovi() {
                     </div>
                   )}
                   <div className="bg-gradient-to-br from-[#294a70] to-[#3d5a7f] rounded-xl shadow-lg p-6 md:p-8 flex flex-col justify-center items-center text-white">
-                    <h3 className="text-2xl font-bold mb-6 flex items-center gap-2"><span>⭐</span> Prosječna ocjena</h3>
+                    <h3 className="text-2xl font-bold mb-6 flex items-center gap-2"><span></span> Prosječna ocjena</h3>
                     <div className="text-center">
                       <div className="text-8xl font-bold mb-4 drop-shadow-lg">{averageGrade}</div>
                       <p className="text-gray-200 text-lg mb-2">od 10.00</p>
@@ -712,7 +712,7 @@ export default function DiplomskiRadovi() {
 
                 {keywordStats.length > 0 && (
                   <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 mt-8">
-                    <h3 className="text-2xl font-bold text-[#294a70] mb-6 flex items-center gap-2"><span>🔑</span> Statistika ključnih riječi</h3>
+                    <h3 className="text-2xl font-bold text-[#294a70] mb-6 flex items-center gap-2"><span></span> Statistika ključnih riječi</h3>
                     <div className="flex flex-wrap gap-3 justify-center">
                       {keywordStats.map(([keyword, count]) => {
                         const size = Math.max(14, Math.min(32, (count / keywordStats[0][1]) * 32));
