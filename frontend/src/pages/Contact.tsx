@@ -105,12 +105,12 @@ export default function Contact() {
               {
                 icon: <FaPhone />,
                 title: "Telefon",
-                lines: ["+382 20 409 204", "Fax: +382 20 409 232"],
+                lines: ["+382 20 409 216", "Fax: +382 20 409 232"],
               },
               {
                 icon: <FaEnvelope />,
                 title: "Email",
-                lines: ["fit.alumni.club@gmail.com"],
+                lines: ["alumniklubfit@gmail.com"],
               },
               {
                 icon: <FaClock />,

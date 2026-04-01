@@ -15,12 +15,12 @@ const Home: React.FC = () => {
     seconds: 0
   });
 
-  // Countdown do Dana alumnista (15. maj 2025)
+  // Countdown do Dana alumnista (02. april 2026, 16:00)
   useEffect(() => {
     const updateCountdown = () => {
       const now = new Date();
-      // Kreiraj datum eksplicitno: godina, mjesec (0-11), dan
-      const targetDate = new Date(2026, 4, 15, 0, 0, 0);
+      // Kreiraj datum eksplicitno: godina, mjesec (0-11), dan, sat
+      const targetDate = new Date(2026, 3, 2, 16, 0, 0);
 
       console.log('Trenutno vrijeme:', now);
       console.log('Ciljni datum:', targetDate);

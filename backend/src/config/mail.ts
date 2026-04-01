@@ -21,7 +21,7 @@ export const mailTransporter = isTest
 if (!isTest) {
   mailTransporter
     .verify()
-    .then(() => console.log("SMTP ready (SendGrid)"))
+    .then(() => console.log("SMTP ready (Gmail)"))
     .catch((err: any) => console.error("SMTP error:", err));
 }
 
