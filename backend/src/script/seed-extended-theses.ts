@@ -81,6 +81,7 @@ async function seedExtendedTheses() {
         grade: grades[i % grades.length],
         keywords: keywordsList[i % keywordsList.length],
         abstract: abstracts[i % abstracts.length],
+        title_language: "sr",
         user_id: users[0].id
       });
     }
