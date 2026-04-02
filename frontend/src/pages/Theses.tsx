@@ -41,9 +41,11 @@ export default function DiplomskiRadovi() {
     try {
       setLoading(true);
       const response = await api.get("/theses");
-      setPodaci(response.data);
+      const data = response.data;
+      setPodaci(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Greška pri učitavanju radova:", err);
+      setPodaci([]);
     } finally {
       setLoading(false);
     }

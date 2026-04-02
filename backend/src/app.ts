@@ -27,10 +27,11 @@ const uploadsRoot = path.join(__dirname, "..", "uploads");
  * - Render frontend
  * - Local development
  */
-const allowedOrigins = [
+const allowedOrigins: (string | RegExp)[] = [
   "http://localhost:5173",
   "http://localhost:5174",
   "https://alumni-club.onrender.com",
+  /^https:\/\/.*\.vercel\.app$/,
 ];
 
 app.use(
@@ -40,7 +41,11 @@ app.use(
         return callback(null, true);
       }
 
-      if (allowedOrigins.includes(origin)) {
+      const allowed = allowedOrigins.some((o) =>
+        typeof o === "string" ? o === origin : o.test(origin)
+      );
+
+      if (allowed) {
         return callback(null, true);
       }
 
