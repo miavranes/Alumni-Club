@@ -23,6 +23,7 @@ import EventForm from "./pages/EventForm";
 import PublicEventList from "./pages/PublicEventList";
 import PublicEventDetails from "./pages/PublicEventDetails";
 import AdminEventDetails from "./pages/AdminEventDetails";
+import Enroll from "./pages/Enroll";
 
 export default function App() {
   return (
@@ -114,6 +115,7 @@ export default function App() {
             {/* Public event routes */}
             <Route path="/events" element={<PublicEventList />} />
             <Route path="/events/:id" element={<PublicEventDetails />} />
+            <Route path="/enroll" element={<Enroll />} />
 
           </Routes>
         </main>
