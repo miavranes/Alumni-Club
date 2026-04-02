@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
+import { apiFetch } from "../services/fetchApi";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -25,7 +26,7 @@ const PublicCalendar: React.FC = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch("/api/events?status=Published");
+        const res = await apiFetch("/api/events?status=Published");
         const data: EventData[] = await res.json();
 
         const filtered = data.filter((ev) => {
@@ -66,7 +67,7 @@ const PublicCalendar: React.FC = () => {
   const handleEventClick = (info: any) => {
     const eventId = info.event.id;
 
-    fetch(`/api/events/${eventId}/calendar`)
+    apiFetch(`/api/events/${eventId}/calendar`)
       .then((res) => {
         if (!res.ok) throw new Error("Ne mogu preuzeti calendar");
         return res.text();

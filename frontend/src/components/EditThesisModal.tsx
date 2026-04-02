@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { apiFetch } from "../services/fetchApi";
 
 interface EditThesisModalProps {
   isOpen: boolean;
@@ -86,9 +87,10 @@ const EditThesisModal: React.FC<EditThesisModalProps> = ({
   useEffect(() => {
     const fetchAlumni = async () => {
       try {
-        const response = await axios.get("/api/alumni/directory");
-        if (response.data && Array.isArray(response.data.users)) {
-          const filteredAlumni = response.data.users.filter((u: any) => u.role !== "admin");
+        const response = await apiFetch("/api/alumni/directory");
+        const data = await response.json();
+        if (response.ok && Array.isArray(data.users)) {
+          const filteredAlumni = data.users.filter((u: any) => u.role !== "admin");
           setAlumni(filteredAlumni);
         }
       } catch (err) {
@@ -174,7 +176,7 @@ const EditThesisModal: React.FC<EditThesisModalProps> = ({
 
     const loadSuggestions = async () => {
       try {
-        const response = await fetch("/api/theses");
+        const response = await apiFetch("/api/theses");
         const data = await response.json();
         if (response.ok && Array.isArray(data)) {
           const seenMentors: { [key: string]: string } = {};
@@ -294,11 +296,18 @@ const EditThesisModal: React.FC<EditThesisModalProps> = ({
       if (!token) {
         throw new Error("Morate biti prijavljeni da biste azurirali rad.");
       }
-      await axios.put(`/api/theses/${thesis.id}`, payload, {
+      const putRes = await apiFetch(`/api/theses/${thesis.id}`, {
+        method: "PUT",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify(payload),
       });
+      if (!putRes.ok) {
+        const errData = await putRes.json().catch(() => ({}));
+        throw new Error(errData?.message || "Greška pri ažuriranju rada");
+      }
       if (selectedFile) {
         const uploadForm = new FormData();
         uploadForm.append("file", selectedFile);
@@ -310,7 +319,7 @@ const EditThesisModal: React.FC<EditThesisModalProps> = ({
           uploadForm.append("year", String(formData.year).trim());
         }
 
-        const uploadResponse = await fetch(`/api/theses/upload-pdf/${thesis.id}`, {
+        const uploadResponse = await apiFetch(`/api/theses/upload-pdf/${thesis.id}`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -328,7 +337,7 @@ const EditThesisModal: React.FC<EditThesisModalProps> = ({
         const uploadForm = new FormData();
         uploadForm.append("file", selectedZipFile);
 
-        const uploadResponse = await fetch(`/api/theses/upload-zip/${thesis.id}`, {
+        const uploadResponse = await apiFetch(`/api/theses/upload-zip/${thesis.id}`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../services/fetchApi";
 
 interface Event {
   id: number;
@@ -20,7 +21,7 @@ const EventList: React.FC = () => {
   const perPage = 5;
 
   useEffect(() => {
-    fetch(`/api/events?search=${search}`, {
+    apiFetch(`/api/events?search=${search}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
       .then(res => res.json())
@@ -32,7 +33,7 @@ const EventList: React.FC = () => {
     if (!window.confirm("Da li ste sigurni da želite da obrišete ovaj događaj?")) return;
 
     try {
-      const res = await fetch(`/api/events/${eventId}`, {
+      const res = await apiFetch(`/api/events/${eventId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });

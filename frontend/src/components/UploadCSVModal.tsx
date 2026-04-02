@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { apiFetch } from "../services/fetchApi";
 
 interface UploadCSVModalProps {
   isOpen: boolean;
@@ -34,7 +35,7 @@ const UploadCSVModal: React.FC<UploadCSVModalProps> = ({
     try {
       setLoading(true);
 
-      const response = await fetch("/api/theses/upload-csv", {
+      const response = await apiFetch("/api/theses/upload-csv", {
         method: "POST",
         body: formData,
       });

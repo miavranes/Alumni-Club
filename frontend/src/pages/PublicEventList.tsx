@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Calendar, MapPin } from "lucide-react";
 import PublicCalendar from "./PublicCalendar";
+import { apiFetch } from "../services/fetchApi";
 
 interface Event {
   id: number;
@@ -24,7 +25,7 @@ export default function PublicEventList() {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch("/api/events");
+        const res = await apiFetch("/api/events");
         const data: Event[] = await res.json();
 
         setEvents(

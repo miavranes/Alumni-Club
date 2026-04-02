@@ -6,6 +6,8 @@ import UploadCSVModal from "../components/UploadCSVModal";
 import AddThesisModal from "../components/AddThesisModal";
 import EditThesisModal from "../components/EditThesisModal";
 import axios from "axios";
+import api from "../services/api";
+import { apiFetch } from "../services/fetchApi";
 
 const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
@@ -38,7 +40,7 @@ export default function DiplomskiRadovi() {
   const fetchTheses = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("/api/theses");
+      const response = await api.get("/theses");
       setPodaci(response.data);
     } catch (err) {
       console.error("Greška pri učitavanju radova:", err);
@@ -62,7 +64,7 @@ export default function DiplomskiRadovi() {
     if (!confirmed) return;
 
     try {
-      const response = await fetch(`/api/theses/${thesisId}`, {
+      const response = await apiFetch(`/api/theses/${thesisId}`, {
         method: "DELETE",
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       });
@@ -448,7 +450,7 @@ export default function DiplomskiRadovi() {
                                     {p.fileUrl && (
                                       <button onClick={async () => {
                                         try {
-                                          await axios.post(`/api/theses/${p.id}/download`);
+                                          await api.post(`/theses/${p.id}/download`);
                                           const safeTitle = (p.title || "thesis").toString().replace(/[^a-zA-Z0-9_-]+/g,"_").replace(/^_+|_+$/g,"").slice(0,60) || "thesis";
                                           await downloadFile(getFileUrl(p.fileUrl), `${safeTitle}.pdf`);
                                         } catch (err) {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { apiFetch } from "../services/fetchApi";
 
 interface AddThesisModalProps {
   isOpen: boolean;
@@ -97,7 +98,7 @@ export default function AddThesisModal({ isOpen, onClose, onSuccess }: AddThesis
 
     const loadAlumni = async () => {
       try {
-        const response = await fetch("/api/alumni/directory");
+        const response = await apiFetch("/api/alumni/directory");
         const data = await response.json();
         if (response.ok && Array.isArray(data.users)) {
           setAlumniOptions(
@@ -151,7 +152,7 @@ export default function AddThesisModal({ isOpen, onClose, onSuccess }: AddThesis
 
     const loadSuggestions = async () => {
       try {
-        const response = await fetch("/api/theses");
+        const response = await apiFetch("/api/theses");
         const data = await response.json();
         if (response.ok && Array.isArray(data)) {
           // Izvuci jedinstvene mentore (normalizovano)
@@ -321,7 +322,7 @@ export default function AddThesisModal({ isOpen, onClose, onSuccess }: AddThesis
         
         // Kreiraj novog alumnistu u bazi
         try {
-          const createUserResponse = await fetch("/api/admin/users", {
+          const createUserResponse = await apiFetch("/api/admin/users", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -389,7 +390,7 @@ export default function AddThesisModal({ isOpen, onClose, onSuccess }: AddThesis
 
     try {
       setIsSubmitting(true);
-      const response = await fetch("/api/theses", {
+      const response = await apiFetch("/api/theses", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -419,7 +420,7 @@ export default function AddThesisModal({ isOpen, onClose, onSuccess }: AddThesis
           uploadForm.append("year", String(parsedYear).trim());
         }
 
-        const uploadResponse = await fetch(`/api/theses/upload-pdf/${createdId}`, {
+        const uploadResponse = await apiFetch(`/api/theses/upload-pdf/${createdId}`, {
           method: "POST",
           body: uploadForm,
         });
@@ -439,7 +440,7 @@ export default function AddThesisModal({ isOpen, onClose, onSuccess }: AddThesis
         const uploadForm = new FormData();
         uploadForm.append("file", selectedZipFile);
 
-        const uploadResponse = await fetch(`/api/theses/upload-zip/${createdId}`, {
+        const uploadResponse = await apiFetch(`/api/theses/upload-zip/${createdId}`, {
           method: "POST",
           body: uploadForm,
         });

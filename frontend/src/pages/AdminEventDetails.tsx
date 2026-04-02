@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { apiFetch } from "../services/fetchApi";
 
 interface Attendee {
   id: number;
@@ -41,7 +42,7 @@ const AdminEventDetails: React.FC = () => {
 
   // Fetch event info
   const loadEvent = async () => {
-    const res = await fetch(`/api/events/${id}`, {
+    const res = await apiFetch(`/api/events/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -50,7 +51,7 @@ const AdminEventDetails: React.FC = () => {
 
   // Fetch attendees
   const loadAttendees = async () => {
-    const res = await fetch(`/api/events/${id}/attendees`, {
+    const res = await apiFetch(`/api/events/${id}/attendees`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -98,7 +99,7 @@ const AdminEventDetails: React.FC = () => {
 
   const downloadICal = async () => {
     try {
-      const res = await fetch(`/api/events/${id}/calendar`, {
+      const res = await apiFetch(`/api/events/${id}/calendar`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Server error");

@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import { apiFetch } from '../services/fetchApi';
 
 interface User {
   id: number;
@@ -52,7 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (storedToken && storedUser) {
         try {
           // Test if token is valid by making a simple API call
-          const response = await fetch('/api/auth/verify', {
+          const response = await apiFetch('/api/auth/verify', {
             headers: {
               'Authorization': `Bearer ${storedToken}`
             }

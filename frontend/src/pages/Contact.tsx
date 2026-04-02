@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock } from "react-icons/fa";
+import { apiFetch } from "../services/fetchApi";
 
 export default function Contact() {
   const [fullName, setFullName] = useState("");
@@ -18,7 +19,7 @@ export default function Contact() {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/contact", {
+      const res = await apiFetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { apiFetch } from "../services/fetchApi";
 
 interface EventFormProps {
   eventId?: number;
@@ -41,7 +42,7 @@ const EventForm: React.FC<EventFormProps> = ({ eventId }) => {
     const fetchEvent = async () => {
       if (id || eventId) {
         try {
-          const res = await fetch(`/api/events/${id || eventId}`, {
+          const res = await apiFetch(`/api/events/${id || eventId}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           });
           const data = await res.json();
@@ -89,7 +90,7 @@ const EventForm: React.FC<EventFormProps> = ({ eventId }) => {
     };
 
     try {
-      const res = await fetch(
+      const res = await apiFetch(
         eventId || id ? `/api/events/${id || eventId}` : "/api/events",
         {
           method: eventId || id ? "PATCH" : "POST",

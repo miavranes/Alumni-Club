@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Calendar, MapPin, Users, Info } from "lucide-react";
+import { apiFetch } from "../services/fetchApi";
 
 interface Event {
   id: number;
@@ -48,7 +49,7 @@ export default function PublicEventDetails() {
 
   const loadEvent = async () => {
     try {
-      const res = await fetch(`/api/events/${id}`);
+      const res = await apiFetch(`/api/events/${id}`);
       if (!res.ok) throw new Error("Neuspjelo učitavanje događaja");
       const data: Event = await res.json();
       setEvent(data);
@@ -70,7 +71,7 @@ export default function PublicEventDetails() {
     const loadMyRsvp = async () => {
       try {
         setRsvp("loading");
-        const res = await fetch(`/api/events/${id}/rsvp/me`, {
+        const res = await apiFetch(`/api/events/${id}/rsvp/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -104,14 +105,14 @@ export default function PublicEventDetails() {
     try {
       let res;
       if (rsvp) {
-        res = await fetch(`/api/events/${id}/rsvp`, {
+        res = await apiFetch(`/api/events/${id}/rsvp`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error("Neuspjelo otkazivanje RSVP-a");
         setRsvp(null);
       } else {
-        res = await fetch(`/api/events/${id}/rsvp`, {
+        res = await apiFetch(`/api/events/${id}/rsvp`, {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -139,7 +140,7 @@ export default function PublicEventDetails() {
     setRsvpError(null);
 
     try {
-      const res = await fetch(`/api/events/${id}/rsvp/guest`, {
+      const res = await apiFetch(`/api/events/${id}/rsvp/guest`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
